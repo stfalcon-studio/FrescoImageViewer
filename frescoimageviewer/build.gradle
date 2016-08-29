@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 23
@@ -8,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0"
     }
     buildTypes {
         release {
@@ -16,6 +17,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
+
+}
+
+publish {
+    groupId = 'com.github.stfalcon'
+    artifactId = 'frescoimageviewer'
+    publishVersion = '0.1.0'
+    desc = 'Simple full screen image viewer based on Fresco library, that includes "pinch to zoom" and "swipe to dismiss" gestures'
+    licences = ['Apache-2.0']
+    uploadName = 'FrescoImageViewer'
+    website = 'https://github.com/stfalcon-studio/FrescoImageViewer.git'
 }
 
 dependencies {
