@@ -1,6 +1,14 @@
 # FrescoImageViewer
 
-Simple full screen image viewer based on Fresco library, that includes "pinch to zoom" and "swipe to dismiss" gestures
+Simple full screen image viewer for [Fresco library] [frescoRepo] that includes "pinch to zoom" and "swipe to dismiss" gestures.
+Based on [PhotoDraweeView] [photoDraweeViewRepo] by [ongakuer] [coauthor].
+
+![alt tag](images/fresco_image_viewer_demo.gif)
+
+### Requirements
+
+* Fresco v.0.12.0 and higher
+* SDK 14 and and higher
 
 ### Download
 
@@ -19,7 +27,20 @@ or Maven:
 </dependency>
 ```
 
-Look [Sample project] [sample] for more information.
+### Usage
+
+All you need to show viewer is pass the context and ArrayList<String> or String[] into builder and show it.
+Also you can set color for fading background and position of default item.
+
+For us
+```java
+new ImageViewer.Builder(context, list)
+                .setStartPosition(startPosition)
+                .setBackgroundColorRes(R.color.colorPrimaryDark)
+                .show();
+```
+Piece of cake! :)
+You can take a look [sample project] [sample] for more information.
 
 ### License
 
@@ -40,5 +61,7 @@ limitations under the License.
 
 ```
 
-
 [sample]: <https://github.com/stfalcon-studio/FrescoImageViewer/tree/master/sample>
+[frescoRepo]: <https://github.com/facebook/fresco>
+[photoDraweeViewRepo]: <https://github.com/ongakuer/PhotoDraweeView>
+[coauthor]: <https://github.com/ongakuer>
