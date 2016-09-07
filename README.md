@@ -44,7 +44,7 @@ You can take a look at [sample project] [sample] for more information.
 ### License
 
 ```
-Copyright (C) 2016 Alexander Krol, stfalcon.com
+Copyright (C) 2016 stfalcon.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

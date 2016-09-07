@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Alexander Krol stfalcon.com
+ * Copyright (C) 2016 stfalcon.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /*
- * Created by troy379 on 29.08.16.
+ * Created by Alexander Krol (troy379) on 29.08.16.
  */
 class MultiTouchViewPager extends ViewPager {
 

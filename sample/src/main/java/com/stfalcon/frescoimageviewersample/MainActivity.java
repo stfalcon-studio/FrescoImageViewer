@@ -7,6 +7,9 @@ import android.view.View;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
+/*
+ * Created by Alexander Krol (troy379) on 29.08.16.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String[] posters = {
