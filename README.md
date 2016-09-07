@@ -30,7 +30,7 @@ or Maven:
 ### Usage
 
 All you need to show viewer is pass the context and ArrayList<String> or String[] into builder and show it.
-Also you can set color for fading background and position of default item.
+You can also set color for fading background and position of default item.
 
 ```java
 new ImageViewer.Builder(context, list)
@@ -39,7 +39,7 @@ new ImageViewer.Builder(context, list)
                 .show();
 ```
 Piece of cake! :)
-You can take a look [sample project] [sample] for more information.
+You can take a look at [sample project] [sample] for more information.
 
 ### License
 
