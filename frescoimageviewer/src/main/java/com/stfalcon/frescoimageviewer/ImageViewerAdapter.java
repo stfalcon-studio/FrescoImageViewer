@@ -83,6 +83,10 @@ class ImageViewerAdapter extends PagerAdapter {
         drawees.get(index).setScale(1.0f, true);
     }
 
+    public String getUrl(int index) {
+        return urls.get(index);
+    }
+
     private void generateDrawees() {
         drawees = new ArrayList<>();
         for (String url : urls) {

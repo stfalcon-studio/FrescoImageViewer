@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -55,11 +56,23 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         }
     }
 
+    public String getUrl() {
+        return viewer.getUrl();
+    }
+
     private void createDialog() {
         viewer = new ImageViewerView(builder.context);
         viewer.setUrls(builder.urls, builder.startPosition);
         viewer.setOnDismissListener(this);
         viewer.setBackgroundColor(builder.backgroundColor);
+        viewer.setPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if (builder.imageChangeListener != null) {
+                    builder.imageChangeListener.onImageChange(getUrl());
+                }
+            }
+        });
 
         dialog = new AlertDialog.Builder(builder.context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen)
                 .setView(viewer)
@@ -93,16 +106,22 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     }
 
     /**
+    * Interface definition for a callback to be invoked when image was changed
+    */
+    public interface OnImageChangeListener {
+        void onImageChange(String url);
+    }
+
+    /**
      * Builder class for {@link ImageViewer}
      */
     public static class Builder {
 
         private Context context;
         private ArrayList<String> urls;
-        private
-        @ColorInt
-        int backgroundColor = Color.BLACK;
+        private @ColorInt int backgroundColor = Color.BLACK;
         private int startPosition;
+        private OnImageChangeListener imageChangeListener;
 
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
@@ -146,6 +165,16 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          */
         public Builder setStartPosition(int position) {
             this.startPosition = position;
+            return this;
+        }
+
+        /**
+         * Set {@link ImageViewer.OnImageChangeListener} for viewer
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setImageChangeListener(OnImageChangeListener imageChangeListener) {
+            this.imageChangeListener = imageChangeListener;
             return this;
         }
 

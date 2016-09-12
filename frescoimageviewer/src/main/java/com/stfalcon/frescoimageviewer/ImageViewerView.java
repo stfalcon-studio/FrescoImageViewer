@@ -17,6 +17,7 @@
 package com.stfalcon.frescoimageviewer;
 
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -36,6 +37,7 @@ class ImageViewerView extends RelativeLayout
     private ImageViewerAdapter adapter;
     private SwipeDirectionDetector directionDetector;
     private ScaleGestureDetector scaleDetector;
+    private ViewPager.OnPageChangeListener pageChangeListener;
 
     private View dismissContainer;
     private SwipeToDismissListener swipeDismissListener;
@@ -158,6 +160,17 @@ class ImageViewerView extends RelativeLayout
 
     public boolean isScaled() {
         return adapter.isScaled(pager.getCurrentItem());
+    }
+
+    public void setPageChangeListener(ViewPager.OnPageChangeListener pageChangeListener) {
+        pager.removeOnPageChangeListener(this.pageChangeListener);
+        this.pageChangeListener = pageChangeListener;
+        pager.addOnPageChangeListener(pageChangeListener);
+        pageChangeListener.onPageSelected(0);
+    }
+
+    public String getUrl() {
+        return adapter.getUrl(pager.getCurrentItem());
     }
 
     private void setStartPosition(int position) {

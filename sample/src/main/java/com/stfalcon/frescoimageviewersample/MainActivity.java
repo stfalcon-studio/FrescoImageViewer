@@ -3,6 +3,7 @@ package com.stfalcon.frescoimageviewersample;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stfalcon.frescoimageviewer.ImageViewer;
@@ -60,6 +61,16 @@ public class MainActivity extends AppCompatActivity {
     private void showPicker(int startPosition) {
         new ImageViewer.Builder(MainActivity.this, posters)
                 .setStartPosition(startPosition)
+                .setImageChangeListener(getImageChangeListener())
                 .show();
+    }
+
+    private ImageViewer.OnImageChangeListener getImageChangeListener() {
+        return new ImageViewer.OnImageChangeListener() {
+            @Override
+            public void onImageChange(String url) {
+                Toast.makeText(MainActivity.this, url, Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 }
