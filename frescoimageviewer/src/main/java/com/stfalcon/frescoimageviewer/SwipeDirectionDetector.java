@@ -44,11 +44,7 @@ abstract class SwipeDirectionDetector {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 if (!isDetected) {
-                    if (getDistance(event) <= touchSlop) {
-                        onDirectionDetected(Direction.CLICK);
-                    } else {
-                        onDirectionDetected(Direction.NOT_DETECTED);
-                    }
+                    onDirectionDetected(Direction.NOT_DETECTED);
                 }
                 startX = startY = 0.0f;
                 isDetected = false;
@@ -109,7 +105,6 @@ abstract class SwipeDirectionDetector {
     }
 
     public enum Direction {
-        CLICK,
         NOT_DETECTED,
         UP,
         DOWN,

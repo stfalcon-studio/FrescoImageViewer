@@ -25,6 +25,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,11 +66,12 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         viewer.setUrls(builder.urls, builder.startPosition);
         viewer.setOnDismissListener(this);
         viewer.setBackgroundColor(builder.backgroundColor);
+        viewer.setOverlayView(builder.overlayView);
         viewer.setPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 if (builder.imageChangeListener != null) {
-                    builder.imageChangeListener.onImageChange(getUrl());
+                    builder.imageChangeListener.onImageChange(position);
                 }
             }
         });
@@ -106,10 +108,10 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     }
 
     /**
-    * Interface definition for a callback to be invoked when image was changed
-    */
+     * Interface definition for a callback to be invoked when image was changed
+     */
     public interface OnImageChangeListener {
-        void onImageChange(String url);
+        void onImageChange(int position);
     }
 
     /**
@@ -122,6 +124,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         private @ColorInt int backgroundColor = Color.BLACK;
         private int startPosition;
         private OnImageChangeListener imageChangeListener;
+        private View overlayView;
 
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
@@ -175,6 +178,16 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          */
         public Builder setImageChangeListener(OnImageChangeListener imageChangeListener) {
             this.imageChangeListener = imageChangeListener;
+            return this;
+        }
+
+        /**
+         * Set overlay view
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setOverlayView(View view) {
+            this.overlayView = view;
             return this;
         }
 
