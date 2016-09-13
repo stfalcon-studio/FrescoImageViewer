@@ -86,9 +86,8 @@ class MultiTouchViewPager extends ViewPager {
     private void setScrollStateListener() {
         addOnPageChangeListener(new SimpleOnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                isScrolled = positionOffset == 0.0f;
+            public void onPageScrollStateChanged(int state) {
+                isScrolled = state == SCROLL_STATE_IDLE;
             }
         });
     }

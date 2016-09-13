@@ -31,6 +31,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+
 import java.util.ArrayList;
 
 /*
@@ -53,6 +55,8 @@ class ImageViewerView extends RelativeLayout
 
     private SwipeDirectionDetector.Direction direction;
 
+    private GenericDraweeHierarchyBuilder customDraweeHierarchyBuilder;
+
     private boolean wasScaled;
     private OnDismissListener onDismissListener;
 
@@ -72,9 +76,14 @@ class ImageViewerView extends RelativeLayout
     }
 
     public void setUrls(ArrayList<String> urls, int startPosition) {
-        adapter = new ImageViewerAdapter(getContext(), urls);//, this);
+        adapter = new ImageViewerAdapter(
+                getContext(), urls, customDraweeHierarchyBuilder);
         pager.setAdapter(adapter);
         setStartPosition(startPosition);
+    }
+
+    public void setCustomDraweeHierarchyBuilder(GenericDraweeHierarchyBuilder customDraweeHierarchyBuilder) {
+        this.customDraweeHierarchyBuilder = customDraweeHierarchyBuilder;
     }
 
     @Override
@@ -85,7 +94,13 @@ class ImageViewerView extends RelativeLayout
 
     public void setOverlayView(View view) {
         this.overlayView = view;
-        dismissContainer.addView(view);
+        if (overlayView != null) {
+            dismissContainer.addView(view);
+        }
+    }
+
+    public void setImageMargin(int marginPixels) {
+        pager.setPageMargin(marginPixels);
     }
 
     private void init() {
@@ -121,7 +136,6 @@ class ImageViewerView extends RelativeLayout
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-
         if (event.getAction() == MotionEvent.ACTION_UP) {
             onActionDown(event);
             isOverlayWasClicked = dispatchOverlayTouch(event);
@@ -216,15 +230,15 @@ class ImageViewerView extends RelativeLayout
     }
 
     private void onClick(MotionEvent event, boolean isOverlayWasClicked) {
-        if (!isOverlayWasClicked) {
+        if (overlayView != null && !isOverlayWasClicked) {
             animateVisibility(overlayView.getVisibility() == VISIBLE);
-            direction = null;
             super.dispatchTouchEvent(event);
         }
     }
 
     private boolean dispatchOverlayTouch(MotionEvent event) {
-        return overlayView.getVisibility() == VISIBLE
+        return overlayView != null
+                && overlayView.getVisibility() == VISIBLE
                 && overlayView.dispatchTouchEvent(event);
     }
 

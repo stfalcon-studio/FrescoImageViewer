@@ -18,6 +18,7 @@
     <style name="DescriptionText" parent="AppTheme">
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:maxLines">5</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
 </resources>

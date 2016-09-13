@@ -27,6 +27,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -63,10 +65,12 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
 
     private void createDialog() {
         viewer = new ImageViewerView(builder.context);
+        viewer.setCustomDraweeHierarchyBuilder(builder.customHierarchyBuilder);
         viewer.setUrls(builder.urls, builder.startPosition);
         viewer.setOnDismissListener(this);
         viewer.setBackgroundColor(builder.backgroundColor);
         viewer.setOverlayView(builder.overlayView);
+        viewer.setImageMargin(builder.imageMarginPixels);
         viewer.setPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -125,6 +129,8 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         private int startPosition;
         private OnImageChangeListener imageChangeListener;
         private View overlayView;
+        private int imageMarginPixels;
+        private GenericDraweeHierarchyBuilder customHierarchyBuilder;
 
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
@@ -188,6 +194,28 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          */
         public Builder setOverlayView(View view) {
             this.overlayView = view;
+            return this;
+        }
+
+        /**
+         * Set space between the images in px.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setImageMargin(int marginPixels) {
+            this.imageMarginPixels = marginPixels;
+            return this;
+        }
+
+        /**
+         * Set {@link GenericDraweeHierarchyBuilder} for drawees inside viewer.
+         * Use it for drawee customizing (e.g. failure image, placeholder, progressbar etc.)
+         * N.B.! Due to zoom logic there is limitation of scale type which always equals FIT_CENTER. Other values will be ignored
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setCustomDraweeHierarchyBuilder(GenericDraweeHierarchyBuilder customHierarchyBuilder) {
+            this.customHierarchyBuilder = customHierarchyBuilder;
             return this;
         }
 
