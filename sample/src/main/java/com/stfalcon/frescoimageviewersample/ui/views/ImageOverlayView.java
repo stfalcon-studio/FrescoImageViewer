@@ -1,4 +1,4 @@
-package com.stfalcon.frescoimageviewersample;
+package com.stfalcon.frescoimageviewersample.ui.views;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.stfalcon.frescoimageviewersample.R;
 
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.

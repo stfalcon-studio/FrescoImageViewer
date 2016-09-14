@@ -16,9 +16,6 @@
 
 package com.stfalcon.frescoimageviewer;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.ViewPager;
@@ -27,7 +24,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
@@ -202,15 +198,15 @@ class ImageViewerView extends RelativeLayout
         return adapter.isScaled(pager.getCurrentItem());
     }
 
+    public String getUrl() {
+        return adapter.getUrl(pager.getCurrentItem());
+    }
+
     public void setPageChangeListener(ViewPager.OnPageChangeListener pageChangeListener) {
         pager.removeOnPageChangeListener(this.pageChangeListener);
         this.pageChangeListener = pageChangeListener;
         pager.addOnPageChangeListener(pageChangeListener);
         pageChangeListener.onPageSelected(pager.getCurrentItem());
-    }
-
-    public String getUrl() {
-        return adapter.getUrl(pager.getCurrentItem());
     }
 
     private void setStartPosition(int position) {
@@ -231,7 +227,7 @@ class ImageViewerView extends RelativeLayout
 
     private void onClick(MotionEvent event, boolean isOverlayWasClicked) {
         if (overlayView != null && !isOverlayWasClicked) {
-            animateVisibility(overlayView.getVisibility() == VISIBLE);
+            AnimationUtils.animateVisibility(overlayView);
             super.dispatchTouchEvent(event);
         }
     }
@@ -240,25 +236,6 @@ class ImageViewerView extends RelativeLayout
         return overlayView != null
                 && overlayView.getVisibility() == VISIBLE
                 && overlayView.dispatchTouchEvent(event);
-    }
-
-    private void animateVisibility(final boolean isVisible) {
-        float from = isVisible ? 1.0f : 0.0f,
-                to = isVisible ? 0.0f : 1.0f;
-
-        ObjectAnimator animation = ObjectAnimator.ofFloat(overlayView, "alpha", from, to);
-        animation.setDuration(ViewConfiguration.getDoubleTapTimeout());
-
-        if (isVisible) {
-            animation.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    overlayView.setVisibility(GONE);
-                }
-            });
-        } else overlayView.setVisibility(VISIBLE);
-
-        animation.start();
     }
 
 }
