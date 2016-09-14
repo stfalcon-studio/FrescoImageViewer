@@ -21,9 +21,13 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,11 +59,26 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         }
     }
 
+    public String getUrl() {
+        return viewer.getUrl();
+    }
+
     private void createDialog() {
         viewer = new ImageViewerView(builder.context);
+        viewer.setCustomDraweeHierarchyBuilder(builder.customHierarchyBuilder);
         viewer.setUrls(builder.urls, builder.startPosition);
         viewer.setOnDismissListener(this);
         viewer.setBackgroundColor(builder.backgroundColor);
+        viewer.setOverlayView(builder.overlayView);
+        viewer.setImageMargin(builder.imageMarginPixels);
+        viewer.setPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if (builder.imageChangeListener != null) {
+                    builder.imageChangeListener.onImageChange(position);
+                }
+            }
+        });
 
         dialog = new AlertDialog.Builder(builder.context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen)
                 .setView(viewer)
@@ -93,16 +112,25 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     }
 
     /**
+     * Interface definition for a callback to be invoked when image was changed
+     */
+    public interface OnImageChangeListener {
+        void onImageChange(int position);
+    }
+
+    /**
      * Builder class for {@link ImageViewer}
      */
     public static class Builder {
 
         private Context context;
         private ArrayList<String> urls;
-        private
-        @ColorInt
-        int backgroundColor = Color.BLACK;
+        private @ColorInt int backgroundColor = Color.BLACK;
         private int startPosition;
+        private OnImageChangeListener imageChangeListener;
+        private View overlayView;
+        private int imageMarginPixels;
+        private GenericDraweeHierarchyBuilder customHierarchyBuilder;
 
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
@@ -146,6 +174,48 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          */
         public Builder setStartPosition(int position) {
             this.startPosition = position;
+            return this;
+        }
+
+        /**
+         * Set {@link ImageViewer.OnImageChangeListener} for viewer
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setImageChangeListener(OnImageChangeListener imageChangeListener) {
+            this.imageChangeListener = imageChangeListener;
+            return this;
+        }
+
+        /**
+         * Set overlay view
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setOverlayView(View view) {
+            this.overlayView = view;
+            return this;
+        }
+
+        /**
+         * Set space between the images in px.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setImageMargin(int marginPixels) {
+            this.imageMarginPixels = marginPixels;
+            return this;
+        }
+
+        /**
+         * Set {@link GenericDraweeHierarchyBuilder} for drawees inside viewer.
+         * Use it for drawee customizing (e.g. failure image, placeholder, progressbar etc.)
+         * N.B.! Due to zoom logic there is limitation of scale type which always equals FIT_CENTER. Other values will be ignored
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setCustomDraweeHierarchyBuilder(GenericDraweeHierarchyBuilder customHierarchyBuilder) {
+            this.customHierarchyBuilder = customHierarchyBuilder;
             return this;
         }
 

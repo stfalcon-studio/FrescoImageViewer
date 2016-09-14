@@ -25,7 +25,8 @@ import android.view.ViewGroup;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.stfalcon.frescoimageviewer.drawee.ZoomableDraweeView;
 
@@ -40,9 +41,13 @@ class ImageViewerAdapter extends PagerAdapter {
     private ArrayList<String> urls;
     private ArrayList<ZoomableDraweeView> drawees;
 
-    public ImageViewerAdapter(Context context, ArrayList<String> urls) {
+    private GenericDraweeHierarchyBuilder hierarchyBuilder;
+
+    public ImageViewerAdapter(Context context, ArrayList<String> urls,
+                              GenericDraweeHierarchyBuilder hierarchyBuilder) {
         this.context = context;
         this.urls = urls;
+        this.hierarchyBuilder = hierarchyBuilder;
         generateDrawees();
     }
 
@@ -72,7 +77,7 @@ class ImageViewerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((SimpleDraweeView) object);
+        container.removeView((ZoomableDraweeView) object);
     }
 
     public boolean isScaled(int index) {
@@ -83,18 +88,32 @@ class ImageViewerAdapter extends PagerAdapter {
         drawees.get(index).setScale(1.0f, true);
     }
 
+    public String getUrl(int index) {
+        return urls.get(index);
+    }
+
     private void generateDrawees() {
         drawees = new ArrayList<>();
         for (String url : urls) {
-            final ZoomableDraweeView drawee = new ZoomableDraweeView(context);
-            PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();
-            controller.setUri(url);
-            controller.setOldController(drawee.getController());
-            controller.setControllerListener(getDraweeControllerListener(drawee));
-            drawee.setController(controller.build());
-
-            drawees.add(drawee);
+            drawees.add(getDrawee(url));
         }
+    }
+
+    private ZoomableDraweeView getDrawee(String url) {
+        ZoomableDraweeView drawee = new ZoomableDraweeView(context);
+
+        if (hierarchyBuilder != null) {
+            hierarchyBuilder.setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER);
+            drawee.setHierarchy(hierarchyBuilder.build());
+        }
+
+        PipelineDraweeControllerBuilder controllerBuilder = Fresco.newDraweeControllerBuilder();
+        controllerBuilder.setUri(url);
+        controllerBuilder.setOldController(drawee.getController());
+        controllerBuilder.setControllerListener(getDraweeControllerListener(drawee));
+        drawee.setController(controllerBuilder.build());
+
+        return drawee;
     }
 
     private BaseControllerListener<ImageInfo>

@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="activity_margin">16dp</dimen>
+    <dimen name="image_margin">48dp</dimen>
+</resources>

@@ -14,7 +14,7 @@ Based on [PhotoDraweeView] [photoDraweeViewRepo] by [ongakuer] [coauthor].
 
 Download via Gradle:
 ```gradle
-compile 'com.github.stfalcon:frescoimageviewer:0.1.0'
+compile 'com.github.stfalcon:frescoimageviewer:0.2.0'
 ```
 
 or Maven:
@@ -22,23 +22,59 @@ or Maven:
 <dependency>
   <groupId>com.github.stfalcon</groupId>
   <artifactId>frescoimageviewer</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <type>pom</type>
 </dependency>
 ```
 
 ### Usage
 
-All you need to show viewer is pass the context and ArrayList<String> or String[] into builder and show it.
-You can also set color for fading background and position of default item.
+All you need to show a viewer is pass the context, start position and ArrayList<String> or String[] into builder and call `show()`.
 
 ```java
 new ImageViewer.Builder(context, list)
                 .setStartPosition(startPosition)
-                .setBackgroundColorRes(R.color.colorPrimaryDark)
                 .show();
 ```
-Piece of cake! :)
+Piece of cake! :cake: :wink:
+
+### Customizing
+
+You can also customize a viewer to fit your needs.
+
+###### Background
+Use `setBackgroundColorRes(colorRes)` or `setBackgroundColor(colorInt)` to set color for fading background.
+
+###### Custom overlay view
+If you need some content over the image (e.g. sharing or download button, description, numeration etc.) you can set your custom view using `setOverlayView(customView)` and bind it with viewer through `ImageViewer.OnImageChangeListener`.
+
+###### Custom drawee hierarchy
+Of course, according to Fresco flexibility, you can use your custom GenericDraweeHierarchy.
+To do this you simply need to create GenericDraweeHierarchy**Builder** and pass it into builder.
+
+**But there is a limitation**: default ScaleType in hierarchy is `ScaleType.FIT_CENTER`, so custom value will be ignored
+
+###### Image margin
+Simply add margins between images in `px` with `setImageMargin(margin)`. For `dp`'s use `getResources().getDimension(R.dimen.image_margin)``
+
+Here is an example that sets all possible options:
+
+```java
+new ImageViewer.Builder(MainActivity.this, list)
+                .setStartPosition(startPosition)
+                .setBackgroundColorRes(colorRes)
+                //.setBackgroundColor(color)
+                .setOverlayView(customView)
+                .setImageChangeListener(changeListener)
+                .setCustomDraweeHierarchyBuilder(customHierarchy)
+                .setImageMargin(margin)
+                .show();
+```
+
+With this possibilities you can achieve something like this:
+
+![alt tag](images/fresco_image_viewer_customizing_demo.gif)
+
 You can take a look at [sample project] [sample] for more information.
 
 ### License

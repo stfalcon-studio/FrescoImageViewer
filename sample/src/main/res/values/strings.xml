@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Fresco Image Viewer</string>
+    <string name="share">Share</string>
 </resources>
