@@ -31,6 +31,7 @@ import com.facebook.imagepipeline.image.ImageInfo;
 import com.stfalcon.frescoimageviewer.drawee.ZoomableDraweeView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.
@@ -38,12 +39,12 @@ import java.util.ArrayList;
 class ImageViewerAdapter extends PagerAdapter {
 
     private Context context;
-    private ArrayList<String> urls;
-    private ArrayList<ZoomableDraweeView> drawees;
+    private List<String> urls;
+    private List<ZoomableDraweeView> drawees;
 
     private GenericDraweeHierarchyBuilder hierarchyBuilder;
 
-    public ImageViewerAdapter(Context context, ArrayList<String> urls,
+    public ImageViewerAdapter(Context context, List<String> urls,
                               GenericDraweeHierarchyBuilder hierarchyBuilder) {
         this.context = context;
         this.urls = urls;

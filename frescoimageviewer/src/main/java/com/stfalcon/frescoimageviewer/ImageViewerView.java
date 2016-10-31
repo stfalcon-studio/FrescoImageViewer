@@ -29,7 +29,7 @@ import android.widget.RelativeLayout;
 
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.
@@ -71,7 +71,7 @@ class ImageViewerView extends RelativeLayout
         init();
     }
 
-    public void setUrls(ArrayList<String> urls, int startPosition) {
+    public void setUrls(List<String> urls, int startPosition) {
         adapter = new ImageViewerAdapter(
                 getContext(), urls, customDraweeHierarchyBuilder);
         pager.setAdapter(adapter);

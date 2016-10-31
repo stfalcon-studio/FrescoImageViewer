@@ -1,6 +1,6 @@
 # FrescoImageViewer
 
-Simple full screen image viewer for [Fresco library] [frescoRepo] that includes "pinch to zoom" and "swipe to dismiss" gestures.
+Simple customizable full screen image viewer for [Fresco library] [frescoRepo] that includes "pinch to zoom" and "swipe to dismiss" gestures.
 Based on [PhotoDraweeView] [photoDraweeViewRepo] by [ongakuer] [coauthor].
 
 ![alt tag](images/fresco_image_viewer_demo.gif)
@@ -50,25 +50,42 @@ If you need some content over the image (e.g. sharing or download button, descri
 
 ###### Custom drawee hierarchy
 Of course, according to Fresco flexibility, you can use your custom GenericDraweeHierarchy.
-To do this you simply need to create GenericDraweeHierarchy**Builder** and pass it into builder.
+To do this you simply need to create GenericDraweeHierarchy**Builder** and pass it into builder:
+```java
+GenericDraweeHierarchyBuilder hierarchyBuilder = GenericDraweeHierarchyBuilder.newInstance(getResources())
+                .setFailureImage(R.drawable.failureDrawable)
+                .setProgressBarImage(R.drawable.progressBarDrawable)
+                .setPlaceholderImage(R.drawable.placeholderDrawable);
+
+        new ImageViewer.Builder(context, urls)
+                ...
+                .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
+                .show();
+```
 
 **But there is a limitation**: default ScaleType in hierarchy is `ScaleType.FIT_CENTER`, so custom value will be ignored
 
 ###### Image margin
-Simply add margins between images in `px` with `setImageMargin(margin)`. For `dp`'s use `getResources().getDimension(R.dimen.image_margin)``
+Simply add margins between images with dimens with setImageMargin(context, dimen) or in `px` using `setImageMargin(marginPx)`.
 
-Here is an example that sets all possible options:
+###### Status bar visibility
+To show/hide status bar in view mode you can set `hideStatusBar(boolean)` in builder. The default value is `strue`.
+
+Here is an example that sets possible options:
 
 ```java
-new ImageViewer.Builder(MainActivity.this, list)
+new ImageViewer.Builder(context, list)
                 .setStartPosition(startPosition)
+                //.hideStatusBar(false)
                 .setBackgroundColorRes(colorRes)
                 //.setBackgroundColor(color)
-                .setOverlayView(customView)
+                .setImageMargin(R.dimen.image_margin)
                 .setImageChangeListener(changeListener)
-                .setCustomDraweeHierarchyBuilder(customHierarchy)
-                .setImageMargin(margin)
+                .setOnDismissListener(dismissListener)
+                .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
+                .setOverlayView(overlayView)
                 .show();
+
 ```
 
 With this possibilities you can achieve something like this:

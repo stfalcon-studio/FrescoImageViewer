@@ -21,6 +21,8 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
+import android.support.annotation.StyleRes;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -31,6 +33,7 @@ import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.
@@ -55,7 +58,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         if (!builder.urls.isEmpty()) {
             dialog.show();
         } else {
-            Log.e(TAG, "Urls list cannot be empty! Viewer ignored.");
+            Log.w(TAG, "Urls list cannot be empty! Viewer ignored.");
         }
     }
 
@@ -80,7 +83,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
             }
         });
 
-        dialog = new AlertDialog.Builder(builder.context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen)
+        dialog = new AlertDialog.Builder(builder.context, getDialogStyle())
                 .setView(viewer)
                 .setOnKeyListener(this)
                 .create();
@@ -92,10 +95,13 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     @Override
     public void onDismiss() {
         dialog.cancel();
+        if (builder.onDismissListener != null) {
+            builder.onDismissListener.onDismiss();
+        }
     }
 
     /**
-     * Resets image on {@literal KeyEvent.KEYCODE_BACK} to normal scale if needed, otherwise - hide the viewer.
+     * Resets image on {@literal KeyEvent.KEYCODE_BACK} to normal scale if needed, otherwise - shouldStatusBarHide the viewer.
      */
     @Override
     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -119,18 +125,33 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     }
 
     /**
+     * Interface definition for a callback to be invoked when viewer was dismissed
+     */
+    public interface OnDismissListener {
+        void onDismiss();
+    }
+
+    private @StyleRes int getDialogStyle() {
+        return builder.shouldStatusBarHide
+                ? android.R.style.Theme_Translucent_NoTitleBar_Fullscreen
+                : android.R.style.Theme_Translucent_NoTitleBar;
+    }
+
+    /**
      * Builder class for {@link ImageViewer}
      */
     public static class Builder {
 
         private Context context;
-        private ArrayList<String> urls;
+        private List<String> urls;
         private @ColorInt int backgroundColor = Color.BLACK;
         private int startPosition;
         private OnImageChangeListener imageChangeListener;
+        private OnDismissListener onDismissListener;
         private View overlayView;
         private int imageMarginPixels;
         private GenericDraweeHierarchyBuilder customHierarchyBuilder;
+        private boolean shouldStatusBarHide = true;
 
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
@@ -142,7 +163,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         /**
          * Constructor using a context and images urls list for this builder and the {@link ImageViewer} it creates.
          */
-        public Builder(Context context, ArrayList<String> urls) {
+        public Builder(Context context, List<String> urls) {
             this.context = context;
             this.urls = urls;
         }
@@ -178,7 +199,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         }
 
         /**
-         * Set {@link ImageViewer.OnImageChangeListener} for viewer
+         * Set {@link ImageViewer.OnImageChangeListener} for viewer.
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
@@ -204,6 +225,36 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          */
         public Builder setImageMargin(int marginPixels) {
             this.imageMarginPixels = marginPixels;
+            return this;
+        }
+
+        /**
+         * Set space between the images using dimension.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setImageMargin(Context context, @DimenRes int dimen) {
+            context.getResources().getDimension(dimen);
+            return this;
+        }
+
+        /**
+         * Set status bar visibility. By default is true.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder hideStatusBar(boolean shouldHide) {
+            this.shouldStatusBarHide = shouldHide;
+            return this;
+        }
+
+        /**
+         * Set {@link ImageViewer.OnDismissListener} for viewer.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setOnDismissListener(OnDismissListener onDismissListener) {
+            this.onDismissListener = onDismissListener;
             return this;
         }
 
