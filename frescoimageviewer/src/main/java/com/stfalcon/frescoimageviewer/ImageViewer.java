@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -224,6 +225,16 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          */
         public Builder setImageMargin(int marginPixels) {
             this.imageMarginPixels = marginPixels;
+            return this;
+        }
+
+        /**
+         * Set space between the images in px.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setImageMargin(Context context, @DimenRes int dimen) {
+            context.getResources().getDimension(dimen);
             return this;
         }
 

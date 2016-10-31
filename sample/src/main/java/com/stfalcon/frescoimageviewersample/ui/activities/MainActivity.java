@@ -61,11 +61,12 @@ public class MainActivity extends AppCompatActivity {
         overlayView = new ImageOverlayView(this);
         new ImageViewer.Builder(MainActivity.this, posters)
                 .setStartPosition(startPosition)
-//                .hideStatusBar(false)
+                //.hideStatusBar(false)
+                .setImageMargin(R.dimen.image_margin)
                 .setImageChangeListener(getImageChangeListener())
+                .setOnDismissListener(getDisissListener())
+                .setCustomDraweeHierarchyBuilder(getHierarchyBuilder())
                 .setOverlayView(overlayView)
-                .setCustomDraweeHierarchyBuilder(getHierarchy())
-                .setImageMargin((int) getResources().getDimension(R.dimen.image_margin))
                 .show();
     }
 
@@ -80,7 +81,16 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    private GenericDraweeHierarchyBuilder getHierarchy() {
+    private ImageViewer.OnDismissListener getDisissListener() {
+        return new ImageViewer.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+
+            }
+        };
+    }
+
+    private GenericDraweeHierarchyBuilder getHierarchyBuilder() {
         RoundingParams roundingParams = new RoundingParams();
         roundingParams.setRoundAsCircle(true);
 
