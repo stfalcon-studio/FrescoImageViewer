@@ -57,7 +57,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         if (!builder.urls.isEmpty()) {
             dialog.show();
         } else {
-            Log.e(TAG, "Urls list cannot be empty! Viewer ignored.");
+            Log.w(TAG, "Urls list cannot be empty! Viewer ignored.");
         }
     }
 
@@ -94,10 +94,13 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     @Override
     public void onDismiss() {
         dialog.cancel();
+        if (builder.onDismissListener != null) {
+            builder.onDismissListener.onDismiss();
+        }
     }
 
     /**
-     * Resets image on {@literal KeyEvent.KEYCODE_BACK} to normal scale if needed, otherwise - shouldHide the viewer.
+     * Resets image on {@literal KeyEvent.KEYCODE_BACK} to normal scale if needed, otherwise - shouldStatusBarHide the viewer.
      */
     @Override
     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -120,8 +123,15 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         void onImageChange(int position);
     }
 
+    /**
+     * Interface definition for a callback to be invoked when viewer was dismissed
+     */
+    public interface OnDismissListener {
+        void onDismiss();
+    }
+
     private @StyleRes int getDialogStyle() {
-        return builder.shouldHide
+        return builder.shouldStatusBarHide
                 ? android.R.style.Theme_Translucent_NoTitleBar_Fullscreen
                 : android.R.style.Theme_Translucent_NoTitleBar;
     }
@@ -136,10 +146,11 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         private @ColorInt int backgroundColor = Color.BLACK;
         private int startPosition;
         private OnImageChangeListener imageChangeListener;
+        private OnDismissListener onDismissListener;
         private View overlayView;
         private int imageMarginPixels;
         private GenericDraweeHierarchyBuilder customHierarchyBuilder;
-        private boolean shouldHide = true;
+        private boolean shouldStatusBarHide = true;
 
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
@@ -187,7 +198,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         }
 
         /**
-         * Set {@link ImageViewer.OnImageChangeListener} for viewer
+         * Set {@link ImageViewer.OnImageChangeListener} for viewer.
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
@@ -222,7 +233,17 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder hideStatusBar(boolean shouldHide) {
-            this.shouldHide = shouldHide;
+            this.shouldStatusBarHide = shouldHide;
+            return this;
+        }
+
+        /**
+         * Set {@link ImageViewer.OnDismissListener} for viewer.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setOnDismissListener(OnDismissListener onDismissListener) {
+            this.onDismissListener = onDismissListener;
             return this;
         }
 
