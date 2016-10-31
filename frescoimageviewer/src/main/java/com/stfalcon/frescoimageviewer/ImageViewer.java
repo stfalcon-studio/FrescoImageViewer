@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.StyleRes;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -81,7 +82,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
             }
         });
 
-        dialog = new AlertDialog.Builder(builder.context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen)
+        dialog = new AlertDialog.Builder(builder.context, getDialogStyle())
                 .setView(viewer)
                 .setOnKeyListener(this)
                 .create();
@@ -96,7 +97,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     }
 
     /**
-     * Resets image on {@literal KeyEvent.KEYCODE_BACK} to normal scale if needed, otherwise - hide the viewer.
+     * Resets image on {@literal KeyEvent.KEYCODE_BACK} to normal scale if needed, otherwise - shouldHide the viewer.
      */
     @Override
     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -119,6 +120,12 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         void onImageChange(int position);
     }
 
+    private @StyleRes int getDialogStyle() {
+        return builder.shouldHide
+                ? android.R.style.Theme_Translucent_NoTitleBar_Fullscreen
+                : android.R.style.Theme_Translucent_NoTitleBar;
+    }
+
     /**
      * Builder class for {@link ImageViewer}
      */
@@ -132,6 +139,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         private View overlayView;
         private int imageMarginPixels;
         private GenericDraweeHierarchyBuilder customHierarchyBuilder;
+        private boolean shouldHide = true;
 
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
@@ -205,6 +213,16 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          */
         public Builder setImageMargin(int marginPixels) {
             this.imageMarginPixels = marginPixels;
+            return this;
+        }
+
+        /**
+         * Set status bar visibility. By default is true.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder hideStatusBar(boolean shouldHide) {
+            this.shouldHide = shouldHide;
             return this;
         }
 

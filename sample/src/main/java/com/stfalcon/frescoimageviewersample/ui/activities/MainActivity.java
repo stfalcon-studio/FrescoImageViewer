@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         overlayView = new ImageOverlayView(this);
         new ImageViewer.Builder(MainActivity.this, posters)
                 .setStartPosition(startPosition)
+//                .hideStatusBar(false)
                 .setImageChangeListener(getImageChangeListener())
                 .setOverlayView(overlayView)
                 .setCustomDraweeHierarchyBuilder(getHierarchy())
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         RoundingParams roundingParams = new RoundingParams();
         roundingParams.setRoundAsCircle(true);
 
-        return GenericDraweeHierarchyBuilder.newInstance(getResources())
-                .setRoundingParams(roundingParams);
+        return GenericDraweeHierarchyBuilder.newInstance(getResources());
+//                .setRoundingParams(roundingParams);
     }
 }
