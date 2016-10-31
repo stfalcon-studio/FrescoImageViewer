@@ -31,6 +31,7 @@ import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.
@@ -124,7 +125,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     public static class Builder {
 
         private Context context;
-        private ArrayList<String> urls;
+        private List<String> urls;
         private @ColorInt int backgroundColor = Color.BLACK;
         private int startPosition;
         private OnImageChangeListener imageChangeListener;
@@ -142,7 +143,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         /**
          * Constructor using a context and images urls list for this builder and the {@link ImageViewer} it creates.
          */
-        public Builder(Context context, ArrayList<String> urls) {
+        public Builder(Context context, List<String> urls) {
             this.context = context;
             this.urls = urls;
         }
