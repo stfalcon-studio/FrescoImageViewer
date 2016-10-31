@@ -229,7 +229,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         }
 
         /**
-         * Set space between the images in px.
+         * Set space between the images using dimension.
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
