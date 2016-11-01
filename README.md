@@ -14,7 +14,7 @@ Based on [PhotoDraweeView] [photoDraweeViewRepo] by [ongakuer] [coauthor].
 
 Download via Gradle:
 ```gradle
-compile 'com.github.stfalcon:frescoimageviewer:0.2.0'
+compile 'com.github.stfalcon:frescoimageviewer:0.3.0'
 ```
 
 or Maven:
@@ -22,7 +22,7 @@ or Maven:
 <dependency>
   <groupId>com.github.stfalcon</groupId>
   <artifactId>frescoimageviewer</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -66,7 +66,7 @@ GenericDraweeHierarchyBuilder hierarchyBuilder = GenericDraweeHierarchyBuilder.n
 **But there is a limitation**: default ScaleType in hierarchy is `ScaleType.FIT_CENTER`, so custom value will be ignored
 
 ###### Image margin
-Simply add margins between images with dimens with setImageMargin(context, dimen) or in `px` using `setImageMargin(marginPx)`.
+Simply add margins between images with dimens with setImageMargin(context, dimen) or in `px` using `setImageMarginPx(marginPx)`.
 
 ###### Status bar visibility
 To show/hide status bar in view mode you can set `hideStatusBar(boolean)` in builder. The default value is `strue`.

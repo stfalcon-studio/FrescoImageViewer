@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         new ImageViewer.Builder(MainActivity.this, posters)
                 .setStartPosition(startPosition)
                 //.hideStatusBar(false)
-                .setImageMargin(R.dimen.image_margin)
+                .setImageMargin(this, R.dimen.image_margin)
                 .setImageChangeListener(getImageChangeListener())
                 .setOnDismissListener(getDisissListener())
                 .setCustomDraweeHierarchyBuilder(getHierarchyBuilder())
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         return new ImageViewer.OnDismissListener() {
             @Override
             public void onDismiss() {
-
+                
             }
         };
     }
