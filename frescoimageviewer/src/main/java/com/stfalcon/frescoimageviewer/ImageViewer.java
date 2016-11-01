@@ -223,7 +223,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setImageMargin(int marginPixels) {
+        public Builder setImageMarginPx(int marginPixels) {
             this.imageMarginPixels = marginPixels;
             return this;
         }
