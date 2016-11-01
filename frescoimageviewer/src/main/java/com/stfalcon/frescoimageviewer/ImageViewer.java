@@ -234,7 +234,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setImageMargin(Context context, @DimenRes int dimen) {
-            context.getResources().getDimension(dimen);
+            this.imageMarginPixels = Math.round(context.getResources().getDimension(dimen));
             return this;
         }
 
