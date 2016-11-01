@@ -28,7 +28,7 @@ android {
 publish {
     groupId = 'com.github.stfalcon'
     artifactId = 'frescoimageviewer'
-    publishVersion = '0.3.0'
+    publishVersion = '0.3.1'
     desc = 'Customizable full screen image viewer based on Fresco library, that includes "pinch to zoom" and "swipe to dismiss" gestures'
     licences = ['Apache-2.0']
     uploadName = 'FrescoImageViewer'

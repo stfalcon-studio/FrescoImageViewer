@@ -14,7 +14,7 @@ Based on [PhotoDraweeView] [photoDraweeViewRepo] by [ongakuer] [coauthor].
 
 Download via Gradle:
 ```gradle
-compile 'com.github.stfalcon:frescoimageviewer:0.3.0'
+compile 'com.github.stfalcon:frescoimageviewer:0.3.1'
 ```
 
 or Maven:
@@ -22,7 +22,7 @@ or Maven:
 <dependency>
   <groupId>com.github.stfalcon</groupId>
   <artifactId>frescoimageviewer</artifactId>
-  <version>0.3.0</version>
+  <version>0.3.1</version>
   <type>pom</type>
 </dependency>
 ```
