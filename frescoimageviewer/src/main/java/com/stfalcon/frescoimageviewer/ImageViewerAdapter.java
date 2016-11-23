@@ -18,6 +18,7 @@ package com.stfalcon.frescoimageviewer;
 
 import android.content.Context;
 import android.graphics.drawable.Animatable;
+import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,10 @@ import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.stfalcon.frescoimageviewer.drawee.ZoomableDraweeView;
 
 import java.util.ArrayList;
@@ -41,14 +45,16 @@ class ImageViewerAdapter extends PagerAdapter {
     private Context context;
     private List<String> urls;
     private List<ZoomableDraweeView> drawees;
+    private ResizeOptions resizeOptions;
 
     private GenericDraweeHierarchyBuilder hierarchyBuilder;
 
     public ImageViewerAdapter(Context context, List<String> urls,
-                              GenericDraweeHierarchyBuilder hierarchyBuilder) {
+                              GenericDraweeHierarchyBuilder hierarchyBuilder, ResizeOptions resizeOptions) {
         this.context = context;
         this.urls = urls;
         this.hierarchyBuilder = hierarchyBuilder;
+        this.resizeOptions = resizeOptions;
         generateDrawees();
     }
 
@@ -109,7 +115,11 @@ class ImageViewerAdapter extends PagerAdapter {
         }
 
         PipelineDraweeControllerBuilder controllerBuilder = Fresco.newDraweeControllerBuilder();
-        controllerBuilder.setUri(url);
+        ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url));
+        if (resizeOptions != null) {
+            imageRequestBuilder.setResizeOptions(resizeOptions);
+        }
+        controllerBuilder.setImageRequest(imageRequestBuilder.build());
         controllerBuilder.setOldController(drawee.getController());
         controllerBuilder.setControllerListener(getDraweeControllerListener(drawee));
         drawee.setController(controllerBuilder.build());

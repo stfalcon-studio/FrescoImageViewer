@@ -30,6 +30,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.imagepipeline.common.ResizeOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +70,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     private void createDialog() {
         viewer = new ImageViewerView(builder.context);
         viewer.setCustomDraweeHierarchyBuilder(builder.customHierarchyBuilder);
-        viewer.setUrls(builder.urls, builder.startPosition);
+        viewer.setUrls(builder.urls, builder.startPosition, builder.resizeOptions);
         viewer.setOnDismissListener(this);
         viewer.setBackgroundColor(builder.backgroundColor);
         viewer.setOverlayView(builder.overlayView);
@@ -152,6 +153,8 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         private int imageMarginPixels;
         private GenericDraweeHierarchyBuilder customHierarchyBuilder;
         private boolean shouldStatusBarHide = true;
+
+        private ResizeOptions resizeOptions;
 
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
@@ -267,6 +270,17 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          */
         public Builder setCustomDraweeHierarchyBuilder(GenericDraweeHierarchyBuilder customHierarchyBuilder) {
             this.customHierarchyBuilder = customHierarchyBuilder;
+            return this;
+        }
+
+        /**
+         * Sets {@link ResizeOptions} to resize images, prior to being decoded (see
+         * <a href="http://frescolib.org/docs/resizing-rotating.html#resizing">resizing</a>)
+         * @param resizeOptions
+         * @return
+         */
+        public Builder setResizeOptions(ResizeOptions resizeOptions) {
+            this.resizeOptions = resizeOptions;
             return this;
         }
 

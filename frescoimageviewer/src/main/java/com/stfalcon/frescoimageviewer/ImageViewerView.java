@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.imagepipeline.common.ResizeOptions;
 
 import java.util.List;
 
@@ -71,9 +72,9 @@ class ImageViewerView extends RelativeLayout
         init();
     }
 
-    public void setUrls(List<String> urls, int startPosition) {
+    public void setUrls(List<String> urls, int startPosition, ResizeOptions resizeOptions) {
         adapter = new ImageViewerAdapter(
-                getContext(), urls, customDraweeHierarchyBuilder);
+                getContext(), urls, customDraweeHierarchyBuilder, resizeOptions);
         pager.setAdapter(adapter);
         setStartPosition(startPosition);
     }
