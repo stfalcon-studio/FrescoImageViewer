@@ -3,8 +3,6 @@ package com.stfalcon.frescoimageviewersample;
 import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
 
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.
@@ -15,9 +13,13 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-//        enable this configuration, if you expect to open really large images
+        /**
+         * IMPORTANT! Enable the configuration below, if you expect to open really large images.
+         * Also you can add the {@code android:largeHeap="true"} to Manifest file to avoid an OOM error.*/
 //        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
 //                .setProgressiveJpegConfig(new SimpleProgressiveJpegConfig())
+//                .setResizeAndRotateEnabledForNetwork(true)
+//                .setDownsampleEnabled(true)
 //                .build();
 //        Fresco.initialize(this, config);
 

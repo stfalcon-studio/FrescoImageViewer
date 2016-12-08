@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.stfalcon.frescoimageviewer.adapter.ImageViewerAdapter;
 
 import java.util.List;
 
@@ -122,8 +123,10 @@ class ImageViewerView extends RelativeLayout
         gestureDetector = new GestureDetectorCompat(getContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-                onClick(e, isOverlayWasClicked);
-                return super.onSingleTapConfirmed(e);
+                if (pager.isScrolled()) {
+                    onClick(e, isOverlayWasClicked);
+                }
+                return false;
             }
         });
     }
@@ -132,18 +135,7 @@ class ImageViewerView extends RelativeLayout
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            onActionDown(event);
-            isOverlayWasClicked = dispatchOverlayTouch(event);
-        }
-
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            onActionUp(event);
-            isOverlayWasClicked = dispatchOverlayTouch(event);
-        }
-
-        scaleDetector.onTouchEvent(event);
-        gestureDetector.onTouchEvent(event);
+        onUpDownEvent(event);
 
         if (direction == null) {
             if (scaleDetector.isInProgress() || event.getPointerCount() > 1) {
@@ -213,16 +205,31 @@ class ImageViewerView extends RelativeLayout
         pager.setCurrentItem(position);
     }
 
+    private void onUpDownEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            onActionUp(event);
+        }
+
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            onActionDown(event);
+        }
+
+        scaleDetector.onTouchEvent(event);
+        gestureDetector.onTouchEvent(event);
+    }
+
     private void onActionDown(MotionEvent event) {
         direction = null;
         wasScaled = false;
         pager.dispatchTouchEvent(event);
         swipeDismissListener.onTouch(dismissContainer, event);
+        isOverlayWasClicked = dispatchOverlayTouch(event);
     }
 
     private void onActionUp(MotionEvent event) {
         swipeDismissListener.onTouch(dismissContainer, event);
         pager.dispatchTouchEvent(event);
+        isOverlayWasClicked = dispatchOverlayTouch(event);
     }
 
     private void onClick(MotionEvent event, boolean isOverlayWasClicked) {
