@@ -25,6 +25,8 @@ import me.relex.photodraweeview.OnScaleChangeListener;
 public class ImageViewerAdapter
         extends RecyclingPagerAdapter<ImageViewerAdapter.ImageViewHolder> {
 
+    private static final float MIN_SCALE_DELTA = 0.03f;
+
     private Context context;
     private List<String> urls;
     private HashSet<ImageViewHolder> holders;
@@ -114,7 +116,7 @@ public class ImageViewerAdapter
 
         @Override
         public void onScaleChange(float scaleFactor, float focusX, float focusY) {
-            isScaled = drawee.getScale() > 1.0f;
+            isScaled = Math.abs(drawee.getScale() - 1.0f) > MIN_SCALE_DELTA;
         }
 
         public void resetScale() {
