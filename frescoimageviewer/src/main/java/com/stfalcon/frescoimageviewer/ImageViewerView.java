@@ -57,6 +57,7 @@ class ImageViewerView extends RelativeLayout
     private boolean wasScaled;
     private OnDismissListener onDismissListener;
 
+
     public ImageViewerView(Context context) {
         super(context);
         init();
@@ -94,6 +95,10 @@ class ImageViewerView extends RelativeLayout
         if (overlayView != null) {
             dismissContainer.addView(view);
         }
+    }
+
+    public void setOnControllerListener(com.stfalcon.frescoimageviewer.OnControllerListener onControllerListener) {
+        adapter.setOnControllerListener(onControllerListener);
     }
 
     public void setImageMargin(int marginPixels) {

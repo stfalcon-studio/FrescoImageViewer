@@ -74,6 +74,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         viewer.setBackgroundColor(builder.backgroundColor);
         viewer.setOverlayView(builder.overlayView);
         viewer.setImageMargin(builder.imageMarginPixels);
+        viewer.setOnControllerListener(builder.onControllerListener);
         viewer.setPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -152,6 +153,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         private int imageMarginPixels;
         private GenericDraweeHierarchyBuilder customHierarchyBuilder;
         private boolean shouldStatusBarHide = true;
+        private OnControllerListener onControllerListener;
 
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
@@ -166,6 +168,12 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         public Builder(Context context, List<String> urls) {
             this.context = context;
             this.urls = urls;
+        }
+
+
+        public Builder setOnControllerListener(com.stfalcon.frescoimageviewer.OnControllerListener onControllerListener) {
+            this.onControllerListener = onControllerListener;
+            return this;
         }
 
         /**
