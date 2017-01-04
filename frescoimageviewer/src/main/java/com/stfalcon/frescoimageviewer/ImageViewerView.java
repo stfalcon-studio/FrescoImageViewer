@@ -28,9 +28,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
-import com.stfalcon.frescoimageviewer.adapter.ImageViewerAdapter;
-
-import java.util.List;
 
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.
@@ -72,9 +69,9 @@ class ImageViewerView extends RelativeLayout
         init();
     }
 
-    public void setUrls(List<String> urls, int startPosition) {
+    public void setUrls(ImageViewer.DataSet<?> dataSet, int startPosition) {
         adapter = new ImageViewerAdapter(
-                getContext(), urls, customDraweeHierarchyBuilder);
+                getContext(), dataSet, customDraweeHierarchyBuilder);
         pager.setAdapter(adapter);
         setStartPosition(startPosition);
     }

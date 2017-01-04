@@ -2,6 +2,9 @@ package com.stfalcon.frescoimageviewersample.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
@@ -9,6 +12,7 @@ import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stfalcon.frescoimageviewer.ImageViewer;
 import com.stfalcon.frescoimageviewersample.R;
+import com.stfalcon.frescoimageviewersample.ui.CustomImagesDemo;
 import com.stfalcon.frescoimageviewersample.ui.Demo;
 import com.stfalcon.frescoimageviewersample.ui.views.ImageOverlayView;
 
@@ -34,9 +38,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
         posters = Demo.getPosters();
         descriptions = Demo.getDescriptions();
         initViews();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_custom:
+                new CustomImagesDemo(Demo.getCustomImages())
+                        .show(this);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void initViews() {
@@ -59,12 +83,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void showPicker(int startPosition) {
         overlayView = new ImageOverlayView(this);
-        new ImageViewer.Builder(MainActivity.this, posters)
+        new ImageViewer.Builder<>(MainActivity.this, posters)
                 .setStartPosition(startPosition)
-                //.hideStatusBar(false)
+                .hideStatusBar(false)
                 .setImageMargin(this, R.dimen.image_margin)
                 .setImageChangeListener(getImageChangeListener())
-                .setOnDismissListener(getDisissListener())
+                .setOnDismissListener(getDismissListener())
                 .setCustomDraweeHierarchyBuilder(getHierarchyBuilder())
                 .setOverlayView(overlayView)
                 .show();
@@ -81,11 +105,11 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    private ImageViewer.OnDismissListener getDisissListener() {
+    private ImageViewer.OnDismissListener getDismissListener() {
         return new ImageViewer.OnDismissListener() {
             @Override
             public void onDismiss() {
-                
+
             }
         };
     }

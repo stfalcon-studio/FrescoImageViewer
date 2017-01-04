@@ -1,4 +1,4 @@
-package com.stfalcon.frescoimageviewer.adapter;
+package com.stfalcon.frescoimageviewer;
 
 import android.content.Context;
 import android.graphics.drawable.Animatable;
@@ -11,11 +11,11 @@ import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.stfalcon.frescoimageviewer.adapter.RecyclingPagerAdapter;
+import com.stfalcon.frescoimageviewer.adapter.ViewHolder;
 import com.stfalcon.frescoimageviewer.drawee.ZoomableDraweeView;
 
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
 import me.relex.photodraweeview.OnScaleChangeListener;
 
@@ -26,14 +26,14 @@ public class ImageViewerAdapter
         extends RecyclingPagerAdapter<ImageViewerAdapter.ImageViewHolder> {
 
     private Context context;
-    private List<String> urls;
+    private ImageViewer.DataSet<?> dataSet;
     private HashSet<ImageViewHolder> holders;
     private GenericDraweeHierarchyBuilder hierarchyBuilder;
 
-    public ImageViewerAdapter(Context context, List<String> urls,
+    public ImageViewerAdapter(Context context, ImageViewer.DataSet<?> dataSet,
                               GenericDraweeHierarchyBuilder hierarchyBuilder) {
         this.context = context;
-        this.urls = urls;
+        this.dataSet = dataSet;
         this.holders = new HashSet<>();
         this.hierarchyBuilder = hierarchyBuilder;
     }
@@ -52,7 +52,7 @@ public class ImageViewerAdapter
 
     @Override
     public int getItemCount() {
-        return urls.size();
+        return dataSet.getData().size();
     }
 
 
@@ -75,7 +75,7 @@ public class ImageViewerAdapter
     }
 
     public String getUrl(int index) {
-        return urls.get(index);
+        return dataSet.format(index);
     }
 
     private BaseControllerListener<ImageInfo>
@@ -107,7 +107,7 @@ public class ImageViewerAdapter
             this.position = position;
 
             tryToSetHierarchy();
-            setController(urls.get(position));
+            setController(dataSet.format(position));
 
             drawee.setOnScaleChangeListener(this);
         }

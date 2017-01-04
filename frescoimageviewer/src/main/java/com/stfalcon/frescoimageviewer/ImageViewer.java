@@ -52,13 +52,13 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     }
 
     /**
-     * Displays the built viewer if passed urls list isn't empty
+     * Displays the built viewer if passed images list isn't empty
      */
     public void show() {
-        if (!builder.urls.isEmpty()) {
+        if (!builder.dataSet.data.isEmpty()) {
             dialog.show();
         } else {
-            Log.w(TAG, "Urls list cannot be empty! Viewer ignored.");
+            Log.w(TAG, "Images list cannot be empty! Viewer ignored.");
         }
     }
 
@@ -69,7 +69,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     private void createDialog() {
         viewer = new ImageViewerView(builder.context);
         viewer.setCustomDraweeHierarchyBuilder(builder.customHierarchyBuilder);
-        viewer.setUrls(builder.urls, builder.startPosition);
+        viewer.setUrls(builder.dataSet, builder.startPosition);
         viewer.setOnDismissListener(this);
         viewer.setBackgroundColor(builder.backgroundColor);
         viewer.setOverlayView(builder.overlayView);
@@ -131,19 +131,58 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         void onDismiss();
     }
 
-    private @StyleRes int getDialogStyle() {
+    private
+    @StyleRes
+    int getDialogStyle() {
         return builder.shouldStatusBarHide
                 ? android.R.style.Theme_Translucent_NoTitleBar_Fullscreen
                 : android.R.style.Theme_Translucent_NoTitleBar;
     }
 
     /**
+     * Interface used to format custom objects into an image url.
+     */
+    public interface Formatter<T> {
+
+        /**
+         * Formats an image url representation of the object.
+         *
+         * @param t The object that needs to be formatted into url.
+         * @return An url of image.
+         */
+        String format(T t);
+    }
+
+    static class DataSet<T> {
+
+        private List<T> data;
+        private Formatter<T> formatter;
+
+        DataSet(List<T> data) {
+            this.data = data;
+        }
+
+        String format(int position) {
+            return format(data.get(position));
+        }
+
+        String format(T t) {
+            if (formatter == null) return t.toString();
+            else return formatter.format(t);
+        }
+
+        public List<T> getData() {
+            return data;
+        }
+    }
+
+    /**
      * Builder class for {@link ImageViewer}
      */
-    public static class Builder {
+    public static class Builder<T> {
 
         private Context context;
-        private List<String> urls;
+        private DataSet<T> dataSet;
         private @ColorInt int backgroundColor = Color.BLACK;
         private int startPosition;
         private OnImageChangeListener imageChangeListener;
@@ -156,16 +195,24 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
          */
-        public Builder(Context context, String[] urls) {
-            this(context, new ArrayList<>(Arrays.asList(urls)));
+        public Builder(Context context, T[] images) {
+            this(context, new ArrayList<>(Arrays.asList(images)));
         }
 
         /**
          * Constructor using a context and images urls list for this builder and the {@link ImageViewer} it creates.
          */
-        public Builder(Context context, List<String> urls) {
+        public Builder(Context context, List<T> images) {
             this.context = context;
-            this.urls = urls;
+            this.dataSet = new DataSet<>(images);
+        }
+
+        /**
+         * If you use an non-string collection, you can use custom {@link Formatter} to represent it as url.
+         */
+        public Builder setFormatter(Formatter<T> formatter) {
+            this.dataSet.formatter = formatter;
+            return this;
         }
 
         /**

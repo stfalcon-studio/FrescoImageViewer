@@ -10,8 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="2dp"
+        android:theme="@style/AppTheme.ActionBar"
         app:title="@string/app_name"/>
 
     <LinearLayout
@@ -23,8 +22,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/firstImage"
@@ -49,8 +48,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/fourthImage"
@@ -75,8 +74,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/seventhImage"

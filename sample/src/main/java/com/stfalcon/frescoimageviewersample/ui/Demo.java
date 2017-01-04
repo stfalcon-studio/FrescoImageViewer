@@ -1,5 +1,8 @@
 package com.stfalcon.frescoimageviewersample.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by troy379 on 14.09.16.
  */
@@ -34,5 +37,36 @@ public final class Demo {
                 "Maximillian \"Max\" Rockatansky started his apocalyptic adventure as a Main Force Patrol officer who fought for peace on the decaying roads of Australian civilization. Max served as the last line of defense against the reckless marauders terrorizing the roadways, driving a V8 Interceptor.",
                 "Daniel Morales - the fastest delivery man for the local pizza parlor Pizza Joe in Marseille, France. On the last day of work, he sets a new speed record, then leaves the job to pursue a new career as a taxi driver with the blessings of his boss and co-workers. Daniel's vehicle is a white 1997 Peugeot 406..."
         };
+    }
+
+    public static List<CustomImage> getCustomImages() {
+        String[] posters = getPosters();
+        String[] descriptions = getDescriptions();
+        List<CustomImage> images = new ArrayList<>();
+
+        for (int i = 0; i < posters.length; i++) {
+            images.add(new CustomImage(posters[i], descriptions[i]));
+        }
+
+        return images;
+    }
+
+    public static class CustomImage {
+
+        private String url;
+        private String description;
+
+        public CustomImage(String url, String description) {
+            this.url = url;
+            this.description = description;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public String getDescription() {
+            return description;
+        }
     }
 }

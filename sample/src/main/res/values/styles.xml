@@ -6,6 +6,12 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/accentText</item>
     </style>
+    
+    <style name="AppTheme.ActionBar" parent="AppTheme">
+        <item name="actionMenuTextColor">@color/colorAccent</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
 
     <style name="SimpleButtonStyle" parent="AppTheme">
         <item name="android:background">@null</item>
