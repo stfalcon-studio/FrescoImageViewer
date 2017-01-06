@@ -1,3 +1,5 @@
+[ ![Download](https://api.bintray.com/packages/troy379/maven/FrescoImageViewer/images/download.svg) ](https://bintray.com/troy379/maven/FrescoImageViewer/_latestVersion)
+
 # FrescoImageViewer
 
 Simple customizable full screen image viewer for [Fresco library] [frescoRepo] that includes "pinch to zoom" and "swipe to dismiss" gestures.
@@ -14,7 +16,7 @@ Based on [PhotoDraweeView] [photoDraweeViewRepo] by [ongakuer] [coauthor].
 
 Download via Gradle:
 ```gradle
-compile 'com.github.stfalcon:frescoimageviewer:0.3.1'
+compile 'com.github.stfalcon:frescoimageviewer:0.4.1'
 ```
 
 or Maven:
@@ -22,14 +24,14 @@ or Maven:
 <dependency>
   <groupId>com.github.stfalcon</groupId>
   <artifactId>frescoimageviewer</artifactId>
-  <version>0.3.1</version>
+  <version>0.4.1</version>
   <type>pom</type>
 </dependency>
 ```
 
 ### Usage
 
-All you need to show a viewer is pass the context, start position and ArrayList<String> or String[] into builder and call `show()`.
+All you need to show a viewer is pass the context, start position and List<String> or String[] into builder and call `show()`.
 
 ```java
 new ImageViewer.Builder(context, list)

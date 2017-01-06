@@ -22,11 +22,14 @@ import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.DraweeView;
 
 import me.relex.photodraweeview.Attacher;
+import me.relex.photodraweeview.OnScaleChangeListener;
 
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.
  */
 class NonInterceptableAttacher extends Attacher {
+
+    private OnScaleChangeListener scaleChangeListener;
 
     public NonInterceptableAttacher(DraweeView<GenericDraweeHierarchy> draweeView) {
         super(draweeView);
@@ -55,5 +58,18 @@ class NonInterceptableAttacher extends Attacher {
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+    }
+
+    @Override
+    public void setOnScaleChangeListener(OnScaleChangeListener listener) {
+        this.scaleChangeListener = listener;
+    }
+
+    @Override
+    public void onScale(float scaleFactor, float focusX, float focusY) {
+        super.onScale(scaleFactor, focusX, focusY);
+        if (scaleChangeListener != null) {
+            scaleChangeListener.onScaleChange(scaleFactor, focusX, focusY);
+        }
     }
 }
