@@ -7,6 +7,9 @@ Based on [PhotoDraweeView] [photoDraweeViewRepo] by [ongakuer] [coauthor].
 
 ![alt tag](images/fresco_image_viewer_demo.gif)
 
+### Who we are
+Need iOS and Android apps, MVP development or prototyping? Contact us via info@stfalcon.com. We develop software since 2009, and we're known experts in this field. Check out our [portfolio](https://stfalcon.com/en/portfolio).
+
 ### Requirements
 
 * Fresco v.0.12.0 and higher
@@ -119,3 +122,7 @@ limitations under the License.
 [frescoRepo]: <https://github.com/facebook/fresco>
 [photoDraweeViewRepo]: <https://github.com/ongakuer/PhotoDraweeView>
 [coauthor]: <https://github.com/ongakuer>
+
+[another library from stfalcon-studio]: <https://stfalcon-studio.github.io/>
+
+
