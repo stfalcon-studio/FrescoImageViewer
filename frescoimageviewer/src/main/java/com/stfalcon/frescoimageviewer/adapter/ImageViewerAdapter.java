@@ -2,6 +2,7 @@ package com.stfalcon.frescoimageviewer.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Animatable;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,11 +11,12 @@ import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.stfalcon.frescoimageviewer.drawee.ZoomableDraweeView;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import me.relex.photodraweeview.OnScaleChangeListener;
@@ -26,16 +28,23 @@ public class ImageViewerAdapter
         extends RecyclingPagerAdapter<ImageViewerAdapter.ImageViewHolder> {
 
     private Context context;
+
     private List<String> urls;
+
     private HashSet<ImageViewHolder> holders;
+
     private GenericDraweeHierarchyBuilder hierarchyBuilder;
 
+    private ResizeOptions resizeOptions;
+
     public ImageViewerAdapter(Context context, List<String> urls,
-                              GenericDraweeHierarchyBuilder hierarchyBuilder) {
+                              GenericDraweeHierarchyBuilder hierarchyBuilder,
+                              ResizeOptions resizeOptions) {
         this.context = context;
         this.urls = urls;
         this.holders = new HashSet<>();
         this.hierarchyBuilder = hierarchyBuilder;
+        this.resizeOptions = resizeOptions;
     }
 
     @Override
@@ -95,7 +104,9 @@ public class ImageViewerAdapter
     class ImageViewHolder extends ViewHolder implements OnScaleChangeListener {
 
         private int position = -1;
+
         private ZoomableDraweeView drawee;
+
         private boolean isScaled;
 
         ImageViewHolder(View itemView) {
@@ -130,7 +141,11 @@ public class ImageViewerAdapter
 
         private void setController(String url) {
             PipelineDraweeControllerBuilder controllerBuilder = Fresco.newDraweeControllerBuilder();
-            controllerBuilder.setUri(url);
+            ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url));
+            if (resizeOptions != null) {
+                imageRequestBuilder.setResizeOptions(resizeOptions);
+            }
+            controllerBuilder.setImageRequest(imageRequestBuilder.build());
             controllerBuilder.setOldController(drawee.getController());
             controllerBuilder.setControllerListener(getDraweeControllerListener(drawee));
             drawee.setController(controllerBuilder.build());
