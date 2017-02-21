@@ -11,10 +11,10 @@ import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.stfalcon.frescoimageviewer.OnControllerListener;
 import com.stfalcon.frescoimageviewer.drawee.ZoomableDraweeView;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import me.relex.photodraweeview.OnScaleChangeListener;
@@ -29,6 +29,8 @@ public class ImageViewerAdapter
     private List<String> urls;
     private HashSet<ImageViewHolder> holders;
     private GenericDraweeHierarchyBuilder hierarchyBuilder;
+    private OnControllerListener onControllerListener;
+
 
     public ImageViewerAdapter(Context context, List<String> urls,
                               GenericDraweeHierarchyBuilder hierarchyBuilder) {
@@ -47,6 +49,7 @@ public class ImageViewerAdapter
 
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
+        holder.setOnControllerListener(onControllerListener);
         holder.bind(position);
     }
 
@@ -78,6 +81,10 @@ public class ImageViewerAdapter
         return urls.get(index);
     }
 
+    public void setOnControllerListener(com.stfalcon.frescoimageviewer.OnControllerListener onControllerListener) {
+        this.onControllerListener = onControllerListener;
+    }
+
     private BaseControllerListener<ImageInfo>
     getDraweeControllerListener(final ZoomableDraweeView drawee) {
         return new BaseControllerListener<ImageInfo>() {
@@ -97,6 +104,8 @@ public class ImageViewerAdapter
         private int position = -1;
         private ZoomableDraweeView drawee;
         private boolean isScaled;
+        private OnControllerListener onControllerListener;
+
 
         ImageViewHolder(View itemView) {
             super(itemView);
@@ -121,6 +130,10 @@ public class ImageViewerAdapter
             drawee.setScale(1.0f, true);
         }
 
+        public void setOnControllerListener(com.stfalcon.frescoimageviewer.OnControllerListener onControllerListener) {
+            this.onControllerListener = onControllerListener;
+        }
+
         private void tryToSetHierarchy() {
             if (hierarchyBuilder != null) {
                 hierarchyBuilder.setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER);
@@ -133,8 +146,13 @@ public class ImageViewerAdapter
             controllerBuilder.setUri(url);
             controllerBuilder.setOldController(drawee.getController());
             controllerBuilder.setControllerListener(getDraweeControllerListener(drawee));
+            if(null!=onControllerListener){
+                onControllerListener.setController(controllerBuilder,url,drawee);
+            }
             drawee.setController(controllerBuilder.build());
         }
-
     }
+
+
+
 }
