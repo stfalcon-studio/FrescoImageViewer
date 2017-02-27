@@ -19,7 +19,7 @@ package com.stfalcon.frescoimageviewer;
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.
  */
-interface OnDismissListener {
+public interface OnDismissListener {
 
     void onDismiss();
 }

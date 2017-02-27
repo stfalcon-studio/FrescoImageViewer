@@ -28,7 +28,7 @@ import android.view.animation.AccelerateInterpolator;
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.
  */
-class SwipeToDismissListener implements View.OnTouchListener {
+public class SwipeToDismissListener implements View.OnTouchListener {
 
     private static final String PROPERTY_TRANSLATION_X = "translationY";
 
@@ -123,7 +123,7 @@ class SwipeToDismissListener implements View.OnTouchListener {
         }
     }
 
-    interface OnViewMoveListener {
+    public interface OnViewMoveListener {
         void onViewMove(float translationY, int translationLimit);
     }
 }

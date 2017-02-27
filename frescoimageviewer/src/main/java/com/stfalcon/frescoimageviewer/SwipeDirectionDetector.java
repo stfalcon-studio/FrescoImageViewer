@@ -23,7 +23,7 @@ import android.view.ViewConfiguration;
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.
  */
-abstract class SwipeDirectionDetector {
+public abstract class SwipeDirectionDetector {
 
     public abstract void onDirectionDetected(Direction direction);
 

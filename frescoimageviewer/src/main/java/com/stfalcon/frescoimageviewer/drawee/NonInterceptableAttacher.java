@@ -27,7 +27,7 @@ import me.relex.photodraweeview.OnScaleChangeListener;
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.
  */
-class NonInterceptableAttacher extends Attacher {
+public class NonInterceptableAttacher extends Attacher {
 
     private OnScaleChangeListener scaleChangeListener;
 
