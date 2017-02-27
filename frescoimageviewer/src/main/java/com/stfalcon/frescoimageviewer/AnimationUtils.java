@@ -9,7 +9,7 @@ import android.view.ViewConfiguration;
 /**
  * Created by troy379 on 14.09.16.
  */
-final class AnimationUtils {
+public final class AnimationUtils {
     private AnimationUtils() {
         throw new AssertionError();
     }
