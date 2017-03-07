@@ -74,6 +74,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         viewer.setBackgroundColor(builder.backgroundColor);
         viewer.setOverlayView(builder.overlayView);
         viewer.setImageMargin(builder.imageMarginPixels);
+        viewer.setContainerPadding(builder.containerPaddingPixels);
         viewer.setPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -194,6 +195,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         private OnDismissListener onDismissListener;
         private View overlayView;
         private int imageMarginPixels;
+        private int[] containerPaddingPixels = new int[4];
         private GenericDraweeHierarchyBuilder customHierarchyBuilder;
         private boolean shouldStatusBarHide = true;
 
@@ -287,6 +289,54 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          */
         public Builder setImageMargin(Context context, @DimenRes int dimen) {
             this.imageMarginPixels = Math.round(context.getResources().getDimension(dimen));
+            return this;
+        }
+
+        /**
+         * Set {@code start}, {@code top}, {@code end} and {@code bottom} padding for zooming and scrolling area in px.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setContainerPaddingPx(int start, int top, int end, int bottom) {
+            this.containerPaddingPixels = new int[]{start, top, end, bottom};
+            return this;
+        }
+
+        /**
+         * Set {@code start}, {@code top}, {@code end} and {@code bottom} padding for zooming and scrolling area using dimension.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setContainerPadding(Context context,
+                                           @DimenRes int start, @DimenRes int top,
+                                           @DimenRes int end, @DimenRes int bottom) {
+            setContainerPaddingPx(
+                    Math.round(context.getResources().getDimension(start)),
+                    Math.round(context.getResources().getDimension(top)),
+                    Math.round(context.getResources().getDimension(end)),
+                    Math.round(context.getResources().getDimension(bottom))
+            );
+            return this;
+        }
+
+        /**
+         * Set common padding for zooming and scrolling area in px.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setContainerPaddingPx(int padding) {
+            this.containerPaddingPixels = new int[]{padding, padding, padding, padding};
+            return this;
+        }
+
+        /**
+         * Set common padding for zooming and scrolling area using dimension.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setContainerPadding(Context context, @DimenRes int padding) {
+            int paddingPx = Math.round(context.getResources().getDimension(padding));
+            setContainerPaddingPx(paddingPx, paddingPx, paddingPx, paddingPx);
             return this;
         }
 

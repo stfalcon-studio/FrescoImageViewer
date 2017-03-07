@@ -53,6 +53,7 @@ class ImageViewerView extends RelativeLayout
 
     private boolean wasScaled;
     private OnDismissListener onDismissListener;
+    boolean isOverlayWasClicked = false;
 
     public ImageViewerView(Context context) {
         super(context);
@@ -97,6 +98,14 @@ class ImageViewerView extends RelativeLayout
         pager.setPageMargin(marginPixels);
     }
 
+    public void setContainerPadding(int[] paddingPixels) {
+        pager.setPadding(
+                paddingPixels[0],
+                paddingPixels[1],
+                paddingPixels[2],
+                paddingPixels[3]);
+    }
+
     private void init() {
         inflate(getContext(), R.layout.image_viewer, this);
 
@@ -128,8 +137,6 @@ class ImageViewerView extends RelativeLayout
         });
     }
 
-    boolean isOverlayWasClicked = false;
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         onUpDownEvent(event);
@@ -159,7 +166,6 @@ class ImageViewerView extends RelativeLayout
         }
         return super.dispatchTouchEvent(event);
     }
-
 
     @Override
     public void onDismiss() {
