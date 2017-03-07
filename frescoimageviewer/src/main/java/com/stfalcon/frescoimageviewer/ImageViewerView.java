@@ -53,7 +53,10 @@ class ImageViewerView extends RelativeLayout
 
     private boolean wasScaled;
     private OnDismissListener onDismissListener;
-    boolean isOverlayWasClicked = false;
+    private boolean isOverlayWasClicked = false;
+
+    private boolean isZoomingAllowed;
+    private boolean isSwipeToDismissAllowed;
 
     public ImageViewerView(Context context) {
         super(context);
@@ -72,7 +75,7 @@ class ImageViewerView extends RelativeLayout
 
     public void setUrls(ImageViewer.DataSet<?> dataSet, int startPosition) {
         adapter = new ImageViewerAdapter(
-                getContext(), dataSet, customDraweeHierarchyBuilder);
+                getContext(), dataSet, customDraweeHierarchyBuilder, isZoomingAllowed);
         pager.setAdapter(adapter);
         setStartPosition(startPosition);
     }
@@ -92,6 +95,14 @@ class ImageViewerView extends RelativeLayout
         if (overlayView != null) {
             dismissContainer.addView(view);
         }
+    }
+
+    public void allowZooming(boolean allowZooming) {
+        this.isZoomingAllowed = allowZooming;
+    }
+
+    public void allowSwipeToDismiss(boolean allowSwipeToDismiss) {
+        this.isSwipeToDismissAllowed = allowSwipeToDismiss;
     }
 
     public void setImageMargin(int marginPixels) {
@@ -154,7 +165,7 @@ class ImageViewerView extends RelativeLayout
                 switch (direction) {
                     case UP:
                     case DOWN:
-                        if (!wasScaled && pager.isScrolled()) {
+                        if (isSwipeToDismissAllowed && !wasScaled && pager.isScrolled()) {
                             return swipeDismissListener.onTouch(dismissContainer, event);
                         } else break;
                     case LEFT:

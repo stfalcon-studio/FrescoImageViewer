@@ -69,12 +69,14 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     private void createDialog() {
         viewer = new ImageViewerView(builder.context);
         viewer.setCustomDraweeHierarchyBuilder(builder.customHierarchyBuilder);
-        viewer.setUrls(builder.dataSet, builder.startPosition);
+        viewer.allowZooming(builder.isZoomingAllowed);
+        viewer.allowSwipeToDismiss(builder.isSwipeToDismissAllowed);
         viewer.setOnDismissListener(this);
         viewer.setBackgroundColor(builder.backgroundColor);
         viewer.setOverlayView(builder.overlayView);
         viewer.setImageMargin(builder.imageMarginPixels);
         viewer.setContainerPadding(builder.containerPaddingPixels);
+        viewer.setUrls(builder.dataSet, builder.startPosition);
         viewer.setPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -198,6 +200,8 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         private int[] containerPaddingPixels = new int[4];
         private GenericDraweeHierarchyBuilder customHierarchyBuilder;
         private boolean shouldStatusBarHide = true;
+        private boolean isZoomingAllowed = true;
+        private boolean isSwipeToDismissAllowed = true;
 
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
@@ -347,6 +351,26 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          */
         public Builder hideStatusBar(boolean shouldHide) {
             this.shouldStatusBarHide = shouldHide;
+            return this;
+        }
+
+        /**
+         * Allow or disallow zooming. By default is true.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder allowZooming(boolean value) {
+            this.isZoomingAllowed = value;
+            return this;
+        }
+
+        /**
+         * Allow or disallow swipe to dismiss gesture. By default is true.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder allowSwipeToDismiss(boolean value) {
+            this.isSwipeToDismissAllowed = value;
             return this;
         }
 

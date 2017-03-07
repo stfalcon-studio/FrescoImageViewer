@@ -29,19 +29,25 @@ public class ImageViewerAdapter
     private ImageViewer.DataSet<?> dataSet;
     private HashSet<ImageViewHolder> holders;
     private GenericDraweeHierarchyBuilder hierarchyBuilder;
+    private boolean isZoomingAllowed;
 
     public ImageViewerAdapter(Context context, ImageViewer.DataSet<?> dataSet,
-                              GenericDraweeHierarchyBuilder hierarchyBuilder) {
+                              GenericDraweeHierarchyBuilder hierarchyBuilder, boolean isZoomingAllowed) {
         this.context = context;
         this.dataSet = dataSet;
         this.holders = new HashSet<>();
         this.hierarchyBuilder = hierarchyBuilder;
+        this.isZoomingAllowed = isZoomingAllowed;
     }
 
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ImageViewHolder holder = new ImageViewHolder(new ZoomableDraweeView(context));
+        ZoomableDraweeView drawee = new ZoomableDraweeView(context);
+        drawee.setEnabled(isZoomingAllowed);
+
+        ImageViewHolder holder = new ImageViewHolder(drawee);
         holders.add(holder);
+
         return holder;
     }
 
