@@ -32,4 +32,5 @@ dependencies {
     compile 'com.facebook.fresco:fresco:0.13.0'
 
     compile 'com.github.mmin18:realtimeblurview:1.1.0'
+    compile 'me.relex:circleindicator:1.2.2@aar'
 }

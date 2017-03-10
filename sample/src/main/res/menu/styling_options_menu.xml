@@ -2,9 +2,9 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_custom"
-        android:orderInCategory="100"
-        android:title="@string/custom"
+        android:id="@+id/action_options"
+        android:icon="@drawable/ic_settings_white_24dp"
+        android:title="@string/action_options"
         app:showAsAction="always"/>
 
 </menu>

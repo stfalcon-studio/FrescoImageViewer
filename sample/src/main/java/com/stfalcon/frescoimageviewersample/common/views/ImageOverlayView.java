@@ -1,4 +1,4 @@
-package com.stfalcon.frescoimageviewersample.ui.views;
+package com.stfalcon.frescoimageviewersample.common.views;
 
 import android.content.Context;
 import android.content.Intent;

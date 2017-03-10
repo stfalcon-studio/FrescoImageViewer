@@ -71,7 +71,7 @@ GenericDraweeHierarchyBuilder hierarchyBuilder = GenericDraweeHierarchyBuilder.n
 Simply add margins between images with dimens with setImageMargin(context, dimen) or in `px` using `setImageMarginPx(marginPx)`.
 
 ###### Status bar visibility
-To show/hide status bar in view mode you can set `hideStatusBar(boolean)` in builder. The default value is `strue`.
+To show/hide status bar in view property you can set `hideStatusBar(boolean)` in builder. The default value is `strue`.
 
 Here is an example that sets possible options:
 
