@@ -22,7 +22,7 @@ import me.relex.photodraweeview.OnScaleChangeListener;
 /*
  * Created by troy379 on 07.12.16.
  */
-public class ImageViewerAdapter
+class ImageViewerAdapter
         extends RecyclingPagerAdapter<ImageViewerAdapter.ImageViewHolder> {
 
     private Context context;
@@ -31,7 +31,7 @@ public class ImageViewerAdapter
     private GenericDraweeHierarchyBuilder hierarchyBuilder;
     private boolean isZoomingAllowed;
 
-    public ImageViewerAdapter(Context context, ImageViewer.DataSet<?> dataSet,
+    ImageViewerAdapter(Context context, ImageViewer.DataSet<?> dataSet,
                               GenericDraweeHierarchyBuilder hierarchyBuilder, boolean isZoomingAllowed) {
         this.context = context;
         this.dataSet = dataSet;
@@ -62,7 +62,7 @@ public class ImageViewerAdapter
     }
 
 
-    public boolean isScaled(int index) {
+    boolean isScaled(int index) {
         for (ImageViewHolder holder : holders) {
             if (holder.position == index) {
                 return holder.isScaled;
@@ -71,7 +71,7 @@ public class ImageViewerAdapter
         return false;
     }
 
-    public void resetScale(int index) {
+    void resetScale(int index) {
         for (ImageViewHolder holder : holders) {
             if (holder.position == index) {
                 holder.resetScale();
@@ -80,7 +80,7 @@ public class ImageViewerAdapter
         }
     }
 
-    public String getUrl(int index) {
+    String getUrl(int index) {
         return dataSet.format(index);
     }
 
@@ -123,7 +123,7 @@ public class ImageViewerAdapter
             isScaled = drawee.getScale() > 1.0f;
         }
 
-        public void resetScale() {
+        void resetScale() {
             drawee.setScale(1.0f, true);
         }
 

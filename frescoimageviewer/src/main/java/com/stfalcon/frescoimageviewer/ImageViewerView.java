@@ -53,10 +53,10 @@ class ImageViewerView extends RelativeLayout
 
     private boolean wasScaled;
     private OnDismissListener onDismissListener;
-    private boolean isOverlayWasClicked = false;
+    private boolean isOverlayWasClicked;
 
-    private boolean isZoomingAllowed;
-    private boolean isSwipeToDismissAllowed;
+    private boolean isZoomingAllowed = true;
+    private boolean isSwipeToDismissAllowed = true;
 
     public ImageViewerView(Context context) {
         super(context);

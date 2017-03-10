@@ -109,7 +109,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     }
 
     /**
-     * Resets image on {@literal KeyEvent.KEYCODE_BACK} to normal scale if needed, otherwise - shouldStatusBarHide the viewer.
+     * Resets image on {@literal KeyEvent.KEYCODE_BACK} to normal scale if needed, otherwise - hide the viewer.
      */
     @Override
     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -139,9 +139,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         void onDismiss();
     }
 
-    private
-    @StyleRes
-    int getDialogStyle() {
+    private @StyleRes int getDialogStyle() {
         return builder.shouldStatusBarHide
                 ? android.R.style.Theme_Translucent_NoTitleBar_Fullscreen
                 : android.R.style.Theme_Translucent_NoTitleBar;
