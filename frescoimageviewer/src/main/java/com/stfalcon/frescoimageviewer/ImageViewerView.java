@@ -28,9 +28,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
-import com.stfalcon.frescoimageviewer.adapter.ImageViewerAdapter;
-
-import java.util.List;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 /*
  * Created by Alexander Krol (troy379) on 29.08.16.
@@ -52,10 +50,15 @@ class ImageViewerView extends RelativeLayout
 
     private SwipeDirectionDetector.Direction direction;
 
+    private ImageRequestBuilder customImageRequestBuilder;
     private GenericDraweeHierarchyBuilder customDraweeHierarchyBuilder;
 
     private boolean wasScaled;
     private OnDismissListener onDismissListener;
+    private boolean isOverlayWasClicked;
+
+    private boolean isZoomingAllowed = true;
+    private boolean isSwipeToDismissAllowed = true;
 
     public ImageViewerView(Context context) {
         super(context);
@@ -72,11 +75,15 @@ class ImageViewerView extends RelativeLayout
         init();
     }
 
-    public void setUrls(List<String> urls, int startPosition) {
+    public void setUrls(ImageViewer.DataSet<?> dataSet, int startPosition) {
         adapter = new ImageViewerAdapter(
-                getContext(), urls, customDraweeHierarchyBuilder);
+                getContext(), dataSet, customImageRequestBuilder, customDraweeHierarchyBuilder, isZoomingAllowed);
         pager.setAdapter(adapter);
         setStartPosition(startPosition);
+    }
+
+    public void setCustomImageRequestBuilder(ImageRequestBuilder customImageRequestBuilder) {
+        this.customImageRequestBuilder = customImageRequestBuilder;
     }
 
     public void setCustomDraweeHierarchyBuilder(GenericDraweeHierarchyBuilder customDraweeHierarchyBuilder) {
@@ -96,8 +103,24 @@ class ImageViewerView extends RelativeLayout
         }
     }
 
+    public void allowZooming(boolean allowZooming) {
+        this.isZoomingAllowed = allowZooming;
+    }
+
+    public void allowSwipeToDismiss(boolean allowSwipeToDismiss) {
+        this.isSwipeToDismissAllowed = allowSwipeToDismiss;
+    }
+
     public void setImageMargin(int marginPixels) {
         pager.setPageMargin(marginPixels);
+    }
+
+    public void setContainerPadding(int[] paddingPixels) {
+        pager.setPadding(
+                paddingPixels[0],
+                paddingPixels[1],
+                paddingPixels[2],
+                paddingPixels[3]);
     }
 
     private void init() {
@@ -131,8 +154,6 @@ class ImageViewerView extends RelativeLayout
         });
     }
 
-    boolean isOverlayWasClicked = false;
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         onUpDownEvent(event);
@@ -150,7 +171,7 @@ class ImageViewerView extends RelativeLayout
                 switch (direction) {
                     case UP:
                     case DOWN:
-                        if (!wasScaled && pager.isScrolled()) {
+                        if (isSwipeToDismissAllowed && !wasScaled && pager.isScrolled()) {
                             return swipeDismissListener.onTouch(dismissContainer, event);
                         } else break;
                     case LEFT:
@@ -162,7 +183,6 @@ class ImageViewerView extends RelativeLayout
         }
         return super.dispatchTouchEvent(event);
     }
-
 
     @Override
     public void onDismiss() {

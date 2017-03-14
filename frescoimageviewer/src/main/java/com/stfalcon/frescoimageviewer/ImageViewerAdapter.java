@@ -1,7 +1,8 @@
-package com.stfalcon.frescoimageviewer.adapter;
+package com.stfalcon.frescoimageviewer;
 
 import android.content.Context;
 import android.graphics.drawable.Animatable;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,37 +12,48 @@ import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.stfalcon.frescoimageviewer.adapter.RecyclingPagerAdapter;
+import com.stfalcon.frescoimageviewer.adapter.ViewHolder;
 import com.stfalcon.frescoimageviewer.drawee.ZoomableDraweeView;
 
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
 import me.relex.photodraweeview.OnScaleChangeListener;
 
 /*
  * Created by troy379 on 07.12.16.
  */
-public class ImageViewerAdapter
+class ImageViewerAdapter
         extends RecyclingPagerAdapter<ImageViewerAdapter.ImageViewHolder> {
 
     private Context context;
-    private List<String> urls;
+    private ImageViewer.DataSet<?> dataSet;
     private HashSet<ImageViewHolder> holders;
+    private ImageRequestBuilder imageRequestBuilder;
     private GenericDraweeHierarchyBuilder hierarchyBuilder;
+    private boolean isZoomingAllowed;
 
-    public ImageViewerAdapter(Context context, List<String> urls,
-                              GenericDraweeHierarchyBuilder hierarchyBuilder) {
+    ImageViewerAdapter(Context context, ImageViewer.DataSet<?> dataSet,
+                       ImageRequestBuilder imageRequestBuilder,
+                       GenericDraweeHierarchyBuilder hierarchyBuilder,
+                       boolean isZoomingAllowed) {
         this.context = context;
-        this.urls = urls;
+        this.dataSet = dataSet;
         this.holders = new HashSet<>();
+        this.imageRequestBuilder = imageRequestBuilder;
         this.hierarchyBuilder = hierarchyBuilder;
+        this.isZoomingAllowed = isZoomingAllowed;
     }
 
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ImageViewHolder holder = new ImageViewHolder(new ZoomableDraweeView(context));
+        ZoomableDraweeView drawee = new ZoomableDraweeView(context);
+        drawee.setEnabled(isZoomingAllowed);
+
+        ImageViewHolder holder = new ImageViewHolder(drawee);
         holders.add(holder);
+
         return holder;
     }
 
@@ -52,11 +64,11 @@ public class ImageViewerAdapter
 
     @Override
     public int getItemCount() {
-        return urls.size();
+        return dataSet.getData().size();
     }
 
 
-    public boolean isScaled(int index) {
+    boolean isScaled(int index) {
         for (ImageViewHolder holder : holders) {
             if (holder.position == index) {
                 return holder.isScaled;
@@ -65,7 +77,7 @@ public class ImageViewerAdapter
         return false;
     }
 
-    public void resetScale(int index) {
+    void resetScale(int index) {
         for (ImageViewHolder holder : holders) {
             if (holder.position == index) {
                 holder.resetScale();
@@ -74,8 +86,8 @@ public class ImageViewerAdapter
         }
     }
 
-    public String getUrl(int index) {
-        return urls.get(index);
+    String getUrl(int index) {
+        return dataSet.format(index);
     }
 
     private BaseControllerListener<ImageInfo>
@@ -107,7 +119,7 @@ public class ImageViewerAdapter
             this.position = position;
 
             tryToSetHierarchy();
-            setController(urls.get(position));
+            setController(dataSet.format(position));
 
             drawee.setOnScaleChangeListener(this);
         }
@@ -117,7 +129,7 @@ public class ImageViewerAdapter
             isScaled = drawee.getScale() > 1.0f;
         }
 
-        public void resetScale() {
+        void resetScale() {
             drawee.setScale(1.0f, true);
         }
 
@@ -133,6 +145,10 @@ public class ImageViewerAdapter
             controllerBuilder.setUri(url);
             controllerBuilder.setOldController(drawee.getController());
             controllerBuilder.setControllerListener(getDraweeControllerListener(drawee));
+            if (imageRequestBuilder != null) {
+                imageRequestBuilder.setSource(Uri.parse(url));
+                controllerBuilder.setImageRequest(imageRequestBuilder.build());
+            }
             drawee.setController(controllerBuilder.build());
         }
 

@@ -19,6 +19,7 @@ package com.stfalcon.frescoimageviewer;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
@@ -30,6 +31,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,13 +54,13 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     }
 
     /**
-     * Displays the built viewer if passed urls list isn't empty
+     * Displays the built viewer if passed images list isn't empty
      */
     public void show() {
-        if (!builder.urls.isEmpty()) {
+        if (!builder.dataSet.data.isEmpty()) {
             dialog.show();
         } else {
-            Log.w(TAG, "Urls list cannot be empty! Viewer ignored.");
+            Log.w(TAG, "Images list cannot be empty! Viewer ignored.");
         }
     }
 
@@ -68,12 +70,16 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
 
     private void createDialog() {
         viewer = new ImageViewerView(builder.context);
+        viewer.setCustomImageRequestBuilder(builder.customImageRequestBuilder);
         viewer.setCustomDraweeHierarchyBuilder(builder.customHierarchyBuilder);
-        viewer.setUrls(builder.urls, builder.startPosition);
+        viewer.allowZooming(builder.isZoomingAllowed);
+        viewer.allowSwipeToDismiss(builder.isSwipeToDismissAllowed);
         viewer.setOnDismissListener(this);
         viewer.setBackgroundColor(builder.backgroundColor);
         viewer.setOverlayView(builder.overlayView);
         viewer.setImageMargin(builder.imageMarginPixels);
+        viewer.setContainerPadding(builder.containerPaddingPixels);
+        viewer.setUrls(builder.dataSet, builder.startPosition);
         viewer.setPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -87,6 +93,14 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
                 .setView(viewer)
                 .setOnKeyListener(this)
                 .create();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                if (builder.onDismissListener != null) {
+                    builder.onDismissListener.onDismiss();
+                }
+            }
+        });
     }
 
     /**
@@ -94,14 +108,11 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
      */
     @Override
     public void onDismiss() {
-        dialog.cancel();
-        if (builder.onDismissListener != null) {
-            builder.onDismissListener.onDismiss();
-        }
+        dialog.dismiss();
     }
 
     /**
-     * Resets image on {@literal KeyEvent.KEYCODE_BACK} to normal scale if needed, otherwise - shouldStatusBarHide the viewer.
+     * Resets image on {@literal KeyEvent.KEYCODE_BACK} to normal scale if needed, otherwise - hide the viewer.
      */
     @Override
     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -115,6 +126,13 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
             }
         }
         return true;
+    }
+
+    /**
+     * Creates new {@code ImageRequestBuilder}.
+     */
+    public static ImageRequestBuilder createImageRequestBuilder() {
+        return ImageRequestBuilder.newBuilderWithSource(Uri.parse(""));
     }
 
     /**
@@ -138,34 +156,83 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     }
 
     /**
+     * Interface used to format custom objects into an image url.
+     */
+    public interface Formatter<T> {
+
+        /**
+         * Formats an image url representation of the object.
+         *
+         * @param t The object that needs to be formatted into url.
+         * @return An url of image.
+         */
+        String format(T t);
+    }
+
+    static class DataSet<T> {
+
+        private List<T> data;
+        private Formatter<T> formatter;
+
+        DataSet(List<T> data) {
+            this.data = data;
+        }
+
+        String format(int position) {
+            return format(data.get(position));
+        }
+
+        String format(T t) {
+            if (formatter == null) return t.toString();
+            else return formatter.format(t);
+        }
+
+        public List<T> getData() {
+            return data;
+        }
+    }
+
+    /**
      * Builder class for {@link ImageViewer}
      */
-    public static class Builder {
+    public static class Builder<T> {
 
         private Context context;
-        private List<String> urls;
+        private DataSet<T> dataSet;
         private @ColorInt int backgroundColor = Color.BLACK;
         private int startPosition;
         private OnImageChangeListener imageChangeListener;
         private OnDismissListener onDismissListener;
         private View overlayView;
         private int imageMarginPixels;
+        private int[] containerPaddingPixels = new int[4];
+        private ImageRequestBuilder customImageRequestBuilder;
         private GenericDraweeHierarchyBuilder customHierarchyBuilder;
         private boolean shouldStatusBarHide = true;
+        private boolean isZoomingAllowed = true;
+        private boolean isSwipeToDismissAllowed = true;
 
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
          */
-        public Builder(Context context, String[] urls) {
-            this(context, new ArrayList<>(Arrays.asList(urls)));
+        public Builder(Context context, T[] images) {
+            this(context, new ArrayList<>(Arrays.asList(images)));
         }
 
         /**
          * Constructor using a context and images urls list for this builder and the {@link ImageViewer} it creates.
          */
-        public Builder(Context context, List<String> urls) {
+        public Builder(Context context, List<T> images) {
             this.context = context;
-            this.urls = urls;
+            this.dataSet = new DataSet<>(images);
+        }
+
+        /**
+         * If you use an non-string collection, you can use custom {@link Formatter} to represent it as url.
+         */
+        public Builder setFormatter(Formatter<T> formatter) {
+            this.dataSet.formatter = formatter;
+            return this;
         }
 
         /**
@@ -239,6 +306,54 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         }
 
         /**
+         * Set {@code start}, {@code top}, {@code end} and {@code bottom} padding for zooming and scrolling area in px.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setContainerPaddingPx(int start, int top, int end, int bottom) {
+            this.containerPaddingPixels = new int[]{start, top, end, bottom};
+            return this;
+        }
+
+        /**
+         * Set {@code start}, {@code top}, {@code end} and {@code bottom} padding for zooming and scrolling area using dimension.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setContainerPadding(Context context,
+                                           @DimenRes int start, @DimenRes int top,
+                                           @DimenRes int end, @DimenRes int bottom) {
+            setContainerPaddingPx(
+                    Math.round(context.getResources().getDimension(start)),
+                    Math.round(context.getResources().getDimension(top)),
+                    Math.round(context.getResources().getDimension(end)),
+                    Math.round(context.getResources().getDimension(bottom))
+            );
+            return this;
+        }
+
+        /**
+         * Set common padding for zooming and scrolling area in px.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setContainerPaddingPx(int padding) {
+            this.containerPaddingPixels = new int[]{padding, padding, padding, padding};
+            return this;
+        }
+
+        /**
+         * Set common padding for zooming and scrolling area using dimension.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setContainerPadding(Context context, @DimenRes int padding) {
+            int paddingPx = Math.round(context.getResources().getDimension(padding));
+            setContainerPaddingPx(paddingPx, paddingPx, paddingPx, paddingPx);
+            return this;
+        }
+
+        /**
          * Set status bar visibility. By default is true.
          *
          * @return This Builder object to allow for chaining of calls to set methods
@@ -249,12 +364,43 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         }
 
         /**
+         * Allow or disallow zooming. By default is true.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder allowZooming(boolean value) {
+            this.isZoomingAllowed = value;
+            return this;
+        }
+
+        /**
+         * Allow or disallow swipe to dismiss gesture. By default is true.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder allowSwipeToDismiss(boolean value) {
+            this.isSwipeToDismissAllowed = value;
+            return this;
+        }
+
+        /**
          * Set {@link ImageViewer.OnDismissListener} for viewer.
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setOnDismissListener(OnDismissListener onDismissListener) {
             this.onDismissListener = onDismissListener;
+            return this;
+        }
+
+        /**
+         * Set @{@code ImageRequestBuilder} for drawees. Use it for post-processing, custom resize options etc.
+         * Use {@link ImageViewer#createImageRequestBuilder()} to create its new instance.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setCustomImageRequestBuilder(ImageRequestBuilder customImageRequestBuilder) {
+            this.customImageRequestBuilder = customImageRequestBuilder;
             return this;
         }
 

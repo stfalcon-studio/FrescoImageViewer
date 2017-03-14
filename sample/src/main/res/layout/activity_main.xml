@@ -1,102 +1,69 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <!--stub-->
+    <android.support.v4.widget.Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fitsSystemWindows="true"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/postersContainer"
+        layout="@layout/content_posters_grid"
+        android:fitsSystemWindows="true"/>
+
+    <com.github.mmin18.widget.RealtimeBlurView
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="2dp"
-        app:title="@string/app_name"/>
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:fitsSystemWindows="true"
+        app:realtimeBlurRadius="10dp"
+        app:realtimeOverlayColor="#96000000"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="4">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_margin="@dimen/activity_margin"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/sample_title"
+            android:textColor="@color/accentText"
+            android:textSize="28sp"/>
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/firstImage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/secondImage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/thirdImage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="3">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/fourthImage"
-                android:layout_width="0dp"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingBottom="20dp"
+                android:paddingLeft="@dimen/card_padding"
+                android:paddingRight="@dimen/card_padding"/>
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/fifthImage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"/>
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/sixthImage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="1">
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/seventhImage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/eighthImage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/ninethImage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 

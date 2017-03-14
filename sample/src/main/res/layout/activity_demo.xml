@@ -1,0 +1,12 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include
+        android:id="@+id/postersContainer"
+        layout="@layout/content_posters_grid"/>
+
+</android.support.design.widget.CoordinatorLayout>

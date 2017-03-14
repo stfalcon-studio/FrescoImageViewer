@@ -1,6 +1,11 @@
-package com.stfalcon.frescoimageviewersample.ui;
+package com.stfalcon.frescoimageviewersample.common.data;
 
-/**
+import com.stfalcon.frescoimageviewersample.common.data.models.CustomImage;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/*
  * Created by troy379 on 14.09.16.
  */
 public final class Demo {
@@ -8,17 +13,19 @@ public final class Demo {
         throw new AssertionError();
     }
 
+    private static final String POSTERS_PATH = "https://raw.githubusercontent.com/stfalcon-studio/FrescoImageViewer/v.0.5.0/images/posters";
+
     public static String[] getPosters() {
         return new String[]{
-                "https://pp.vk.me/c630619/v630619423/4637a/vAOodrqPzQM.jpg", // Vincent
-                "https://pp.vk.me/c630619/v630619423/46395/71QKIPW6BWM.jpg", // Jules
-                "https://pp.vk.me/c630619/v630619423/46383/GOTf1IvHKoc.jpg", // Korben
-                "https://pp.vk.me/c630619/v630619423/4638c/i1URx2fWj20.jpg", // Toretto
-                "https://pp.vk.me/c630619/v630619423/4639e/BPoHv4xEikA.jpg", // Marty
-                "https://pp.vk.me/c630619/v630619423/463a7/9EjA0oqA_yQ.jpg", // Driver
-                "https://pp.vk.me/c630619/v630619423/463b0/VLPAZQJ0kuI.jpg", // Frank
-                "https://pp.vk.me/c630619/v630619423/463b9/O3-hk8kIvdY.jpg", // Max
-                "https://pp.vk.me/c630619/v630619423/463c2/WgtvE0FQwVY.jpg"  // Daniel
+                POSTERS_PATH + "/Vincent.jpg",
+                POSTERS_PATH + "/Jules.jpg",
+                POSTERS_PATH + "/Korben.jpg",
+                POSTERS_PATH + "/Toretto.jpg",
+                POSTERS_PATH + "/Marty.jpg",
+                POSTERS_PATH + "/Driver.jpg",
+                POSTERS_PATH + "/Frank.jpg",
+                POSTERS_PATH + "/Max.jpg",
+                POSTERS_PATH + "/Daniel.jpg"
         };
     }
 
@@ -34,5 +41,17 @@ public final class Demo {
                 "Maximillian \"Max\" Rockatansky started his apocalyptic adventure as a Main Force Patrol officer who fought for peace on the decaying roads of Australian civilization. Max served as the last line of defense against the reckless marauders terrorizing the roadways, driving a V8 Interceptor.",
                 "Daniel Morales - the fastest delivery man for the local pizza parlor Pizza Joe in Marseille, France. On the last day of work, he sets a new speed record, then leaves the job to pursue a new career as a taxi driver with the blessings of his boss and co-workers. Daniel's vehicle is a white 1997 Peugeot 406..."
         };
+    }
+
+    public static List<CustomImage> getCustomImages() {
+        String[] posters = getPosters();
+        String[] descriptions = getDescriptions();
+        List<CustomImage> images = new ArrayList<>();
+
+        for (int i = 0; i < posters.length; i++) {
+            images.add(new CustomImage(posters[i], descriptions[i]));
+        }
+
+        return images;
     }
 }

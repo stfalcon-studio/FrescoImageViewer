@@ -1,4 +1,39 @@
 <resources>
+
     <string name="app_name">Fresco Image Viewer</string>
+
+    <string name="sample_title">Fresco Image Viewer</string>
+
+    <string name="action_simple_usage">Simple usage</string>
+    <string name="action_styled_view">Styled view</string>
+    <string name="action_rotation_support">Rotation support</string>
+    <string name="action_custom_objects">Custom objects</string>
+
+    <string name="action_description_simple_usage">Traditional viewer without any customizing. The fastest way to implement.</string>
+    <string name="action_description_styled_view">Customized viewer with overlay view, custom margins and padding.</string>
+    <string name="action_description_rotation_support">Example of how to handle activity rotation.</string>
+    <string name="action_description_custom_objects">Using formatter for custom objects - forget about converting.</string>
+    <string name="view">View</string>
+
     <string name="share">Share</string>
+    <string name="message_open_viewer">Tap on any image to open viewer!</string>
+    <string name="message_styling">Open options menu in toolbar to check available options to change!</string>
+    <string name="message_on_dismiss">Dialog was successfully dismissed!</string>
+    <string name="message_rotate">Open the viewer and try to rotate device. Important! Don\'t forget to enable rotation settings :)</string>
+    <string name="custom_objects_hint">This example uses custom image objects and shows images via custom formatter.</string>
+    <string name="got_it">Got it!</string>
+    <string name="action_options">Options</string>
+
+    <string-array name="options">
+        <item>hide status bar</item>
+        <item>images margin</item>
+        <item>container padding</item>
+        <item>images rounding</item>
+        <item>swipe-to-dismiss</item>
+        <item>zooming</item>
+        <item>show overlay</item>
+        <item>random background</item>
+        <item>post-processing (via ImageRequestBuilder)</item>
+    </string-array>
+
 </resources>
