@@ -2,8 +2,8 @@
 
 # FrescoImageViewer
 
-Simple customizable full screen image viewer for [Fresco library] [frescoRepo] that includes "pinch to zoom" and "swipe to dismiss" gestures.
-Based on [PhotoDraweeView] [photoDraweeViewRepo] by [ongakuer] [coauthor].
+Simple customizable full screen image viewer for [Fresco library][frescoRepo] that includes "pinch to zoom" and "swipe to dismiss" gestures.
+Based on [PhotoDraweeView][photoDraweeViewRepo] by [ongakuer][coauthor].
 
 ![alt tag](images/fresco_image_viewer_demo.gif)
 
@@ -135,7 +135,7 @@ With this possibilities you can achieve something like this:
 
 ![alt tag](images/fresco_image_viewer_customizing_demo.gif)
 
-You can take a look at [sample project] [sample] for more information.
+You can take a look at [sample project][sample] for more information.
 
 ### License
 
