@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
-        versionName "0.4.1"
+        versionName "0.5.0"
     }
     buildTypes {
         release {
@@ -28,7 +28,7 @@ android {
 publish {
     groupId = 'com.github.stfalcon'
     artifactId = 'frescoimageviewer'
-    publishVersion = '0.4.1'
+    publishVersion = '0.5.0'
     desc = 'Customizable full screen image viewer based on Fresco library, that includes "pinch to zoom" and "swipe to dismiss" gestures'
     licences = ['Apache-2.0']
     uploadName = 'FrescoImageViewer'
