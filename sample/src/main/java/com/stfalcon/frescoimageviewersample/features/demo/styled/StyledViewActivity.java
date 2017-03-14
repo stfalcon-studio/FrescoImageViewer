@@ -16,6 +16,8 @@ import com.stfalcon.frescoimageviewersample.utils.StylingOptions;
 
 import java.util.Random;
 
+import jp.wasabeef.fresco.processors.GrayscalePostprocessor;
+
 /*
  * Created by troy379 on 06.03.17.
  */
@@ -62,9 +64,7 @@ public class StyledViewActivity extends DemoActivity {
         }
 
         if (options.get(StylingOptions.Property.IMAGES_ROUNDING)) {
-            overlayView = new ImageOverlayView(this);
             builder.setCustomDraweeHierarchyBuilder(getRoundedHierarchyBuilder());
-            builder.setImageChangeListener(getImageChangeListener());
         }
 
         builder.allowSwipeToDismiss(options.get(StylingOptions.Property.SWIPE_TO_DISMISS));
@@ -72,12 +72,19 @@ public class StyledViewActivity extends DemoActivity {
         builder.allowZooming(options.get(StylingOptions.Property.ZOOMING));
 
         if (options.get(StylingOptions.Property.SHOW_OVERLAY)) {
+            overlayView = new ImageOverlayView(this);
             builder.setOverlayView(overlayView);
+            builder.setImageChangeListener(getImageChangeListener());
         }
 
         if (options.get(StylingOptions.Property.RANDOM_BACKGROUND)) {
-            Random random = new Random();
-            builder.setBackgroundColor(Color.argb(255, random.nextInt(156), random.nextInt(156), random.nextInt(156)));
+            builder.setBackgroundColor(getRandomColor());
+        }
+
+        if (options.get(StylingOptions.Property.POST_PROCESSING)) {
+            builder.setCustomImageRequestBuilder(
+                    ImageViewer.createImageRequestBuilder()
+                            .setPostprocessor(new GrayscalePostprocessor()));
         }
 
         builder.show();
@@ -110,5 +117,10 @@ public class StyledViewActivity extends DemoActivity {
 
         return GenericDraweeHierarchyBuilder.newInstance(getResources())
                 .setRoundingParams(roundingParams);
+    }
+
+    private int getRandomColor() {
+        Random random = new Random();
+        return Color.argb(255, random.nextInt(156), random.nextInt(156), random.nextInt(156));
     }
 }

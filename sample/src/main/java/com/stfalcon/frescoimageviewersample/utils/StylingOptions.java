@@ -24,6 +24,7 @@ public class StylingOptions {
         put(Property.ZOOMING, true);
         put(Property.SHOW_OVERLAY, true);
         put(Property.RANDOM_BACKGROUND, false);
+        put(Property.POST_PROCESSING, false);
     }};
 
     public boolean get(Property property) {
@@ -52,7 +53,8 @@ public class StylingOptions {
         SWIPE_TO_DISMISS,
         ZOOMING,
         SHOW_OVERLAY,
-        RANDOM_BACKGROUND
+        RANDOM_BACKGROUND,
+        POST_PROCESSING
     }
 
     private static boolean[] toPrimitiveBooleanArray(Collection<Boolean> collection) {

@@ -33,6 +33,7 @@
         <item>zooming</item>
         <item>show overlay</item>
         <item>random background</item>
+        <item>post-processing (via ImageRequestBuilder)</item>
     </string-array>
 
 </resources>
