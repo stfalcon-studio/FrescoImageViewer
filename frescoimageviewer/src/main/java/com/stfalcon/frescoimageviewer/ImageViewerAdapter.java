@@ -2,6 +2,7 @@ package com.stfalcon.frescoimageviewer;
 
 import android.content.Context;
 import android.graphics.drawable.Animatable;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,6 +12,7 @@ import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.stfalcon.frescoimageviewer.adapter.RecyclingPagerAdapter;
 import com.stfalcon.frescoimageviewer.adapter.ViewHolder;
 import com.stfalcon.frescoimageviewer.drawee.ZoomableDraweeView;
@@ -28,14 +30,18 @@ class ImageViewerAdapter
     private Context context;
     private ImageViewer.DataSet<?> dataSet;
     private HashSet<ImageViewHolder> holders;
+    private ImageRequestBuilder imageRequestBuilder;
     private GenericDraweeHierarchyBuilder hierarchyBuilder;
     private boolean isZoomingAllowed;
 
     ImageViewerAdapter(Context context, ImageViewer.DataSet<?> dataSet,
-                              GenericDraweeHierarchyBuilder hierarchyBuilder, boolean isZoomingAllowed) {
+                       ImageRequestBuilder imageRequestBuilder,
+                       GenericDraweeHierarchyBuilder hierarchyBuilder,
+                       boolean isZoomingAllowed) {
         this.context = context;
         this.dataSet = dataSet;
         this.holders = new HashSet<>();
+        this.imageRequestBuilder = imageRequestBuilder;
         this.hierarchyBuilder = hierarchyBuilder;
         this.isZoomingAllowed = isZoomingAllowed;
     }
@@ -139,6 +145,10 @@ class ImageViewerAdapter
             controllerBuilder.setUri(url);
             controllerBuilder.setOldController(drawee.getController());
             controllerBuilder.setControllerListener(getDraweeControllerListener(drawee));
+            if (imageRequestBuilder != null) {
+                imageRequestBuilder.setSource(Uri.parse(url));
+                controllerBuilder.setImageRequest(imageRequestBuilder.build());
+            }
             drawee.setController(controllerBuilder.build());
         }
 
