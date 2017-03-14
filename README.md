@@ -10,19 +10,19 @@ Based on [PhotoDraweeView][photoDraweeViewRepo] by [ongakuer][coauthor].
 ### Who we are
 Need iOS and Android apps, MVP development or prototyping? Contact us via info@stfalcon.com. We develop software since 2009, and we're known experts in this field. Check out our [portfolio](https://stfalcon.com/en/portfolio) and see more libraries from [stfalcon-studio](https://stfalcon-studio.github.io/).
 
-### Requirements
+## Requirements
 
 * Fresco v.0.12.0 and higher
 * SDK 14 and and higher
 
-### Download
+## Download
 
-Download via Gradle:
+Download via **Gradle**:
 ```gradle
 compile 'com.github.stfalcon:frescoimageviewer:0.5.0'
 ```
 
-or Maven:
+or **Maven**:
 ```xml
 <dependency>
   <groupId>com.github.stfalcon</groupId>
@@ -32,9 +32,9 @@ or Maven:
 </dependency>
 ```
 
-### Usage
+## Usage
 
-###### Simple usage
+#### Simple usage
 All you need to show a viewer is pass the context, start position and List<String> or String[] into builder and call `show()`.
 ```java
 new ImageViewer.Builder(context, list)
@@ -42,7 +42,7 @@ new ImageViewer.Builder(context, list)
         .show();
 ```
 
-###### Custom objects
+#### Custom objects
 But what if in your application images are represented not only with urls? For example, you have object with url and description? You'll have to convert it to list of Strings and only then pass it to viewer, right?
 No, it's unnecessary! With `ImageViewer.Formatter` you can pass list of your custom images to viewer and simply write a rule for url extracting:
 ```java
@@ -60,17 +60,33 @@ If formatter isn't passed, `Object.toString()` will be used for image formatting
 
 Piece of cake! :cake: :wink:
 
-### Customizing
+## Reminder
+Don't forget to initialize Fresco in your Application class:
+```java
+Fresco.initialize(this);
+```
+
+And if you expect to open really large images, use configuration below for better performance:
+```java
+ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+    .setProgressiveJpegConfig(new SimpleProgressiveJpegConfig())
+    .setResizeAndRotateEnabledForNetwork(true)
+    .setDownsampleEnabled(true)
+    .build();
+Fresco.initialize(this, config);
+```
+
+## Customizing
 
 You can also customize a viewer to fit your needs.
 
-###### Background
+#### Background
 Use `setBackgroundColorRes(colorRes)` or `setBackgroundColor(colorInt)` to set color for fading background.
 
-###### Custom overlay view
+#### Custom overlay view
 If you need some content over the image (e.g. sharing or download button, description, numeration etc.) you can set your custom view using `setOverlayView(customView)` and bind it with viewer through `ImageViewer.OnImageChangeListener`.
 
-###### Custom drawee hierarchy
+#### Custom drawee hierarchy
 Of course, according to Fresco flexibility, you can use your custom GenericDraweeHierarchy.
 To do this you simply need to create GenericDraweeHierarchy**Builder** and pass it into builder:
 ```java
@@ -82,9 +98,9 @@ GenericDraweeHierarchyBuilder hierarchyBuilder = GenericDraweeHierarchyBuilder.n
 builder.setCustomDraweeHierarchyBuilder(hierarchyBuilder)
 ```
 
-**But there is a limitation**: default ScaleType in hierarchy is `ScaleType.FIT_CENTER`, so custom value will be ignored
+:exclamation:**But there is a limitation**: default ScaleType in hierarchy is `ScaleType.FIT_CENTER`, so custom value will be ignored
 
-###### Custom image requests
+#### Custom image requests
 For rare cases like post-processing or bitmap resizing you need to use your custom ImageRequestBuilder.
 Create it with `ImageViewer.createImageRequestBuilder()` and after configuration pass it to viewer through `setCustomImageRequestBuilder(ImageRequestBuilder)`.
 ```java
@@ -93,17 +109,17 @@ builder.setCustomImageRequestBuilder(
                     .setPostprocessor(new GrayscalePostprocessor()));
 ```
 
-###### Image margin
+#### Image margin
 Simply add margins between images with dimens with setImageMargin(context, dimen) or in `px` using `setImageMarginPx(marginPx)`.
 
-###### Container padding
+#### Container padding
 Overlay image hides part of image? Set container padding with dimens using `setContainerPadding(context, start, top, end, bottom)` or `setContainerPadding(context, dimean)` for all sides at once.
 For setting padding in pixels, just use `setContainerPaddingPx(...)` method.
 
-###### Status bar visibility
+#### Status bar visibility
 To show/hide status bar in view property you can set `hideStatusBar(boolean)` in builder. The default value is `true`.
 
-###### Gestures disabling
+#### Gestures disabling
 If you need to disable some of gestures - do it using `allowSwipeToDismiss(boolean)` and `allowZooming(boolean)` accordingly.
 
 Here is an example that sets possible options:
@@ -137,7 +153,11 @@ With this possibilities you can achieve something like this:
 
 You can take a look at [sample project][sample] for more information.
 
-### License
+
+## Changelog
+[See the changelog](docs/CHANGELOG.md) to be aware of latest improvements and fixes.
+
+## License
 
 ```
 Copyright (C) 2016 stfalcon.com
