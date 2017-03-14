@@ -7,6 +7,9 @@ Based on [PhotoDraweeView] [photoDraweeViewRepo] by [ongakuer] [coauthor].
 
 ![alt tag](images/fresco_image_viewer_demo.gif)
 
+### Who we are
+Need iOS and Android apps, MVP development or prototyping? Contact us via info@stfalcon.com. We develop software since 2009, and we're known experts in this field. Check out our [portfolio](https://stfalcon.com/en/portfolio) and see more libraries from [stfalcon-studio](https://stfalcon-studio.github.io/).
+
 ### Requirements
 
 * Fresco v.0.12.0 and higher
@@ -31,13 +34,29 @@ or Maven:
 
 ### Usage
 
+###### Simple usage
 All you need to show a viewer is pass the context, start position and List<String> or String[] into builder and call `show()`.
-
 ```java
 new ImageViewer.Builder(context, list)
-                .setStartPosition(startPosition)
-                .show();
+        .setStartPosition(startPosition)
+        .show();
 ```
+
+###### Custom objects
+But what if in your application images are represented not only with urls? For example, you have object with url and description? You'll have to convert it to list of Strings and only then pass it to viewer, right?
+No, it's unnecessary! With `ImageViewer.Formatter` you can pass list of your custom images to viewer and simply write a rule for url extracting:
+```java
+List<CustomImage> images = getImages();
+new ImageViewer.Builder<>(this, images)
+        .setFormatter(new ImageViewer.Formatter<CustomImage>() {
+            @Override
+            public String format(CustomImage customImage) {
+                return customImage.getUrl();
+            }
+        })
+        .show();
+```
+
 Piece of cake! :cake: :wink:
 
 ### Customizing
@@ -55,38 +74,59 @@ Of course, according to Fresco flexibility, you can use your custom GenericDrawe
 To do this you simply need to create GenericDraweeHierarchy**Builder** and pass it into builder:
 ```java
 GenericDraweeHierarchyBuilder hierarchyBuilder = GenericDraweeHierarchyBuilder.newInstance(getResources())
-                .setFailureImage(R.drawable.failureDrawable)
-                .setProgressBarImage(R.drawable.progressBarDrawable)
-                .setPlaceholderImage(R.drawable.placeholderDrawable);
+        .setFailureImage(R.drawable.failureDrawable)
+        .setProgressBarImage(R.drawable.progressBarDrawable)
+        .setPlaceholderImage(R.drawable.placeholderDrawable);
 
-        new ImageViewer.Builder(context, urls)
-                ...
-                .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
-                .show();
+builder.setCustomDraweeHierarchyBuilder(hierarchyBuilder)
 ```
 
 **But there is a limitation**: default ScaleType in hierarchy is `ScaleType.FIT_CENTER`, so custom value will be ignored
 
+###### Custom image requests
+For rare cases like post-processing or bitmap resizing you need to use your custom ImageRequestBuilder.
+Create it with `ImageViewer.createImageRequestBuilder()` and after configuration pass it to viewer through `setCustomImageRequestBuilder(ImageRequestBuilder)`.
+```java
+builder.setCustomImageRequestBuilder(
+            ImageViewer.createImageRequestBuilder()
+                    .setPostprocessor(new GrayscalePostprocessor()));
+```
+
 ###### Image margin
 Simply add margins between images with dimens with setImageMargin(context, dimen) or in `px` using `setImageMarginPx(marginPx)`.
 
+###### Container padding
+Overlay image hides part of image? Set container padding with dimens using `setContainerPadding(context, start, top, end, bottom)` or `setContainerPadding(context, dimean)` for all sides at once.
+For setting padding in pixels, just use `setContainerPaddingPx(...)` method.
+
 ###### Status bar visibility
-To show/hide status bar in view property you can set `hideStatusBar(boolean)` in builder. The default value is `strue`.
+To show/hide status bar in view property you can set `hideStatusBar(boolean)` in builder. The default value is `true`.
+
+###### Gestures disabling
+If you need to disable some of gestures - do it using `allowSwipeToDismiss(boolean)` and `allowZooming(boolean)` accordingly.
 
 Here is an example that sets possible options:
 
 ```java
-new ImageViewer.Builder(context, list)
-                .setStartPosition(startPosition)
-                //.hideStatusBar(false)
-                .setBackgroundColorRes(colorRes)
-                //.setBackgroundColor(color)
-                .setImageMargin(R.dimen.image_margin)
-                .setImageChangeListener(changeListener)
-                .setOnDismissListener(dismissListener)
-                .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
-                .setOverlayView(overlayView)
-                .show();
+new ImageViewer.Builder<>(this, images)
+        .setStartPosition(startPosition)
+        .hideStatusBar(false)
+        .allowZooming(true)
+        .allowSwipeToDismiss(true)
+        .setBackgroundColorRes(colorRes)
+        //.setBackgroundColor(color)
+        .setImageMargin(margin)
+        //.setImageMarginPx(marginPx)
+        .setContainerPadding(this, dimen)
+        //.setContainerPadding(this, dimenStart, dimenTop, dimenEnd, dimenBottom)
+        //.setContainerPaddingPx(padding)
+        //.setContainerPaddingPx(start, top, end, bottom)
+        .setCustomImageRequestBuilder(imageRequestBuilder)
+        .setCustomDraweeHierarchyBuilder(draweeHierarchyBuilder)
+        .setImageChangeListener(imageChangeListener)
+        .setOnDismissListener(onDismissListener)
+        .setOverlayView(overlayView)
+        .show();
 
 ```
 
