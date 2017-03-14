@@ -56,6 +56,7 @@ new ImageViewer.Builder<>(this, images)
         })
         .show();
 ```
+If formatter isn't passed, `Object.toString()` will be used for image formatting as default behavior.
 
 Piece of cake! :cake: :wink:
 
