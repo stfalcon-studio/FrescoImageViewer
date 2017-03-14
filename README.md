@@ -19,7 +19,7 @@ Need iOS and Android apps, MVP development or prototyping? Contact us via info@s
 
 Download via Gradle:
 ```gradle
-compile 'com.github.stfalcon:frescoimageviewer:0.4.1'
+compile 'com.github.stfalcon:frescoimageviewer:0.5.0'
 ```
 
 or Maven:
@@ -27,7 +27,7 @@ or Maven:
 <dependency>
   <groupId>com.github.stfalcon</groupId>
   <artifactId>frescoimageviewer</artifactId>
-  <version>0.4.1</version>
+  <version>0.5.0</version>
   <type>pom</type>
 </dependency>
 ```
