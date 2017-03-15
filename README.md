@@ -15,22 +15,9 @@ Need iOS and Android apps, MVP development or prototyping? Contact us via info@s
 * Fresco v.0.12.0 and higher
 * SDK 14 and and higher
 
-## Download
+## Demo Application
 
-Download via **Gradle**:
-```gradle
-compile 'com.github.stfalcon:frescoimageviewer:0.5.0'
-```
-
-or **Maven**:
-```xml
-<dependency>
-  <groupId>com.github.stfalcon</groupId>
-  <artifactId>frescoimageviewer</artifactId>
-  <version>0.5.0</version>
-  <type>pom</type>
-</dependency>
-```
+[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/badge_new.png)](https://play.google.com/store/apps/details?id=com.stfalcon.frescoimageviewersample)
 
 ## Usage
 
@@ -122,7 +109,7 @@ To show/hide status bar in view property you can set `hideStatusBar(boolean)` in
 #### Gestures disabling
 If you need to disable some of gestures - do it using `allowSwipeToDismiss(boolean)` and `allowZooming(boolean)` accordingly.
 
-Here is an example that sets possible options:
+Here is an example that sets all the possible options:
 
 ```java
 new ImageViewer.Builder<>(this, images)
@@ -153,6 +140,22 @@ With this possibilities you can achieve something like this:
 
 You can take a look at [sample project][sample] for more information.
 
+## Install
+
+Download via **Gradle**:
+```gradle
+compile 'com.github.stfalcon:frescoimageviewer:0.5.0'
+```
+
+or **Maven**:
+```xml
+<dependency>
+  <groupId>com.github.stfalcon</groupId>
+  <artifactId>frescoimageviewer</artifactId>
+  <version>0.5.0</version>
+  <type>pom</type>
+</dependency>
+```
 
 ## Changelog
 [See the changelog](docs/CHANGELOG.md) to be aware of latest improvements and fixes.
