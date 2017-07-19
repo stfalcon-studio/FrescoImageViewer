@@ -1,4 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/troy379/maven/FrescoImageViewer/images/download.svg) ](https://bintray.com/troy379/maven/FrescoImageViewer/_latestVersion)
+[![codebeat badge](https://codebeat.co/badges/60dbbc38-c85e-4680-b25b-6b04d859e904)](https://codebeat.co/projects/github-com-stfalcon-studio-frescoimageviewer-master) [ ![Download](https://api.bintray.com/packages/troy379/maven/FrescoImageViewer/images/download.svg) ](https://bintray.com/troy379/maven/FrescoImageViewer/_latestVersion)
 
 # FrescoImageViewer
 
