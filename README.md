@@ -145,6 +145,7 @@ You can take a look at [sample project][sample] for more information.
 Download via **Gradle**:
 ```gradle
 compile 'com.github.stfalcon:frescoimageviewer:0.5.0'
+compile "com.facebook.fresco:fresco:1.2.0"
 ```
 
 or **Maven**:
