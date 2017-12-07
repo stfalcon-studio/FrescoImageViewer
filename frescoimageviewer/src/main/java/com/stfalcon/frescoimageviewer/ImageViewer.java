@@ -89,7 +89,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
             }
         });
 
-        dialog = new AlertDialog.Builder(builder.context, getDialogStyle())
+        dialog = new AlertDialog.Builder(builder.context, builder.customTheme == 0 ? getDialogStyle() : builder.customTheme)
                 .setView(viewer)
                 .setOnKeyListener(this)
                 .create();
@@ -211,6 +211,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         private boolean shouldStatusBarHide = true;
         private boolean isZoomingAllowed = true;
         private boolean isSwipeToDismissAllowed = true;
+        private @StyleRes int customTheme;
 
         /**
          * Constructor using a context and images urls array for this builder and the {@link ImageViewer} it creates.
@@ -354,7 +355,8 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         }
 
         /**
-         * Set status bar visibility. By default is true.
+         * Set status bar visibility. By default is true.<br>
+         * It is ignored if {@link #setCustomTheme(int)} was used.
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
@@ -413,6 +415,18 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          */
         public Builder setCustomDraweeHierarchyBuilder(GenericDraweeHierarchyBuilder customHierarchyBuilder) {
             this.customHierarchyBuilder = customHierarchyBuilder;
+            return this;
+        }
+
+        /**
+         * Set a custom theme for the viewer.
+         * Using a custom theme will make the viewer ignore the value set with {@link #hideStatusBar(boolean)}.
+         * You can still have it hidden by extending your custom theme from {@code Theme.Translucent.NoTitleBar.Fullscreen}.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setCustomTheme(@StyleRes int theme) {
+            this.customTheme = theme;
             return this;
         }
 
