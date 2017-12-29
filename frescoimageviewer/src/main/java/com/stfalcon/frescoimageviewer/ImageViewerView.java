@@ -154,6 +154,14 @@ class ImageViewerView extends RelativeLayout
         });
     }
 
+    public int getCurrentItem() {
+        return pager.getCurrentItem();
+    }
+
+    public void setCurrentItem(int position) {
+        pager.setCurrentItem(position);
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         onUpDownEvent(event);
