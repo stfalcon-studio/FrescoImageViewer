@@ -16,6 +16,7 @@
     <string name="view">View</string>
 
     <string name="share">Share</string>
+    <string name="next">Next</string>
     <string name="message_open_viewer">Tap on any image to open viewer!</string>
     <string name="message_styling">Open options menu in toolbar to check available options to change!</string>
     <string name="message_on_dismiss">Dialog was successfully dismissed!</string>

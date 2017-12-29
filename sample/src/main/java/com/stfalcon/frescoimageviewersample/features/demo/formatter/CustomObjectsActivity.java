@@ -1,6 +1,7 @@
 package com.stfalcon.frescoimageviewersample.features.demo.formatter;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.stfalcon.frescoimageviewer.ImageViewer;
 import com.stfalcon.frescoimageviewersample.R;
@@ -50,10 +51,16 @@ public class CustomObjectsActivity extends DemoActivity {
     private ImageViewer.OnImageChangeListener getImageChangeListener() {
         return new ImageViewer.OnImageChangeListener() {
             @Override
-            public void onImageChange(int position) {
+            public void onImageChange(int position, final ImageViewer imageViewer) {
                 CustomImage image = images.get(position);
                 overlayView.setShareText(image.getUrl());
                 overlayView.setDescription(image.getDescription());
+                overlayView.getBtnNext().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        imageViewer.setCurrentItem(imageViewer.getCurrentItem() + 1);
+                    }
+                });
             }
         };
     }

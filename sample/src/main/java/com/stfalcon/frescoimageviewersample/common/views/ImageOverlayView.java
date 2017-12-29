@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,6 +16,8 @@ import com.stfalcon.frescoimageviewersample.R;
 public class ImageOverlayView extends RelativeLayout {
 
     private TextView tvDescription;
+
+    private Button btnNext;
 
     private String sharingText;
 
@@ -37,6 +40,10 @@ public class ImageOverlayView extends RelativeLayout {
         tvDescription.setText(description);
     }
 
+    public Button getBtnNext() {
+        return this.btnNext;
+    }
+
     public void setShareText(String text) {
         this.sharingText = text;
     }
@@ -52,6 +59,7 @@ public class ImageOverlayView extends RelativeLayout {
     private void init() {
         View view = inflate(getContext(), R.layout.view_image_overlay, this);
         tvDescription = (TextView) view.findViewById(R.id.tvDescription);
+        btnNext = (Button) view.findViewById(R.id.btnNext);
         view.findViewById(R.id.btnShare).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

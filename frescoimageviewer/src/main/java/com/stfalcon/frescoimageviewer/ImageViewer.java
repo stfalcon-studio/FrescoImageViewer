@@ -47,6 +47,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
     private Builder builder;
     private AlertDialog dialog;
     private ImageViewerView viewer;
+    private ImageViewer ctx = this;
 
     protected ImageViewer(Builder builder) {
         this.builder = builder;
@@ -62,6 +63,14 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         } else {
             Log.w(TAG, "Images list cannot be empty! Viewer ignored.");
         }
+    }
+
+    public int getCurrentItem() {
+        return viewer.getCurrentItem();
+    }
+
+    public void setCurrentItem(int position) {
+        viewer.setCurrentItem(position);
     }
 
     public String getUrl() {
@@ -84,7 +93,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
             @Override
             public void onPageSelected(int position) {
                 if (builder.imageChangeListener != null) {
-                    builder.imageChangeListener.onImageChange(position);
+                    builder.imageChangeListener.onImageChange(position, ctx);
                 }
             }
         });
@@ -139,7 +148,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
      * Interface definition for a callback to be invoked when image was changed
      */
     public interface OnImageChangeListener {
-        void onImageChange(int position);
+        void onImageChange(int position, ImageViewer imageViewer);
     }
 
     /**
