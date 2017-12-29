@@ -59,7 +59,7 @@ public class DialogRotationExampleActivity extends DemoActivity {
     private ImageViewer.OnImageChangeListener getImageChangeListener() {
         return new ImageViewer.OnImageChangeListener() {
             @Override
-            public void onImageChange(int position) {
+            public void onImageChange(int position, ImageViewer imageViewer) {
                 currentPosition = position;
             }
         };

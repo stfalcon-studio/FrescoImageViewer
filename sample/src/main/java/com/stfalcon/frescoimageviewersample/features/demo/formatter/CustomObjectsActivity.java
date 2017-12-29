@@ -50,7 +50,7 @@ public class CustomObjectsActivity extends DemoActivity {
     private ImageViewer.OnImageChangeListener getImageChangeListener() {
         return new ImageViewer.OnImageChangeListener() {
             @Override
-            public void onImageChange(int position) {
+            public void onImageChange(int position, ImageViewer imageViewer) {
                 CustomImage image = images.get(position);
                 overlayView.setShareText(image.getUrl());
                 overlayView.setDescription(image.getDescription());
