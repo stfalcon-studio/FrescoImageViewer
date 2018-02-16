@@ -143,6 +143,7 @@ class ImageViewerAdapter
         private void setController(String url) {
             PipelineDraweeControllerBuilder controllerBuilder = Fresco.newDraweeControllerBuilder();
             controllerBuilder.setUri(url);
+            controllerBuilder.setAutoPlayAnimations(true);
             controllerBuilder.setOldController(drawee.getController());
             controllerBuilder.setControllerListener(getDraweeControllerListener(drawee));
             if (imageRequestBuilder != null) {
