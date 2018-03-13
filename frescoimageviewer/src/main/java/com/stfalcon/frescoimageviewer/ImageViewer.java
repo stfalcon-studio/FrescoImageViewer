@@ -30,6 +30,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
@@ -72,6 +74,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         viewer = new ImageViewerView(builder.context);
         viewer.setCustomImageRequestBuilder(builder.customImageRequestBuilder);
         viewer.setCustomDraweeHierarchyBuilder(builder.customHierarchyBuilder);
+        viewer.setCustomDraweeControllerBuilder(builder.customDraweeControllerBuilder);
         viewer.allowZooming(builder.isZoomingAllowed);
         viewer.allowSwipeToDismiss(builder.isSwipeToDismissAllowed);
         viewer.setOnDismissListener(this);
@@ -133,6 +136,13 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
      */
     public static ImageRequestBuilder createImageRequestBuilder() {
         return ImageRequestBuilder.newBuilderWithSource(Uri.parse(""));
+    }
+
+    /**
+     * Creates new {@code PipelineDraweeControllerBuilder}.
+     */
+    public static PipelineDraweeControllerBuilder createPipelineDraweeControllerBuilder() {
+        return Fresco.newDraweeControllerBuilder();
     }
 
     /**
@@ -208,6 +218,7 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
         private int[] containerPaddingPixels = new int[4];
         private ImageRequestBuilder customImageRequestBuilder;
         private GenericDraweeHierarchyBuilder customHierarchyBuilder;
+        private PipelineDraweeControllerBuilder customDraweeControllerBuilder;
         private boolean shouldStatusBarHide = true;
         private boolean isZoomingAllowed = true;
         private boolean isSwipeToDismissAllowed = true;
@@ -413,6 +424,17 @@ public class ImageViewer implements OnDismissListener, DialogInterface.OnKeyList
          */
         public Builder setCustomDraweeHierarchyBuilder(GenericDraweeHierarchyBuilder customHierarchyBuilder) {
             this.customHierarchyBuilder = customHierarchyBuilder;
+            return this;
+        }
+
+        /**
+         * Set {@link PipelineDraweeControllerBuilder} for drawees inside viewer.
+         * Use {@link ImageViewer#createPipelineDraweeControllerBuilder()} to create its new instance.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setCustomDraweeControllerBuilder(PipelineDraweeControllerBuilder customDraweeControllerBuilder) {
+            this.customDraweeControllerBuilder = customDraweeControllerBuilder;
             return this;
         }
 

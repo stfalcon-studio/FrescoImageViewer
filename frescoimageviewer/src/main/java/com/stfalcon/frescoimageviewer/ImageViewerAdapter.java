@@ -32,16 +32,19 @@ class ImageViewerAdapter
     private HashSet<ImageViewHolder> holders;
     private ImageRequestBuilder imageRequestBuilder;
     private GenericDraweeHierarchyBuilder hierarchyBuilder;
+    private PipelineDraweeControllerBuilder controllerBuilder;
     private boolean isZoomingAllowed;
 
     ImageViewerAdapter(Context context, ImageViewer.DataSet<?> dataSet,
                        ImageRequestBuilder imageRequestBuilder,
                        GenericDraweeHierarchyBuilder hierarchyBuilder,
+                       PipelineDraweeControllerBuilder controllerBuilder,
                        boolean isZoomingAllowed) {
         this.context = context;
         this.dataSet = dataSet;
         this.holders = new HashSet<>();
         this.imageRequestBuilder = imageRequestBuilder;
+        this.controllerBuilder = controllerBuilder;
         this.hierarchyBuilder = hierarchyBuilder;
         this.isZoomingAllowed = isZoomingAllowed;
     }
@@ -141,15 +144,19 @@ class ImageViewerAdapter
         }
 
         private void setController(String url) {
-            PipelineDraweeControllerBuilder controllerBuilder = Fresco.newDraweeControllerBuilder();
-            controllerBuilder.setUri(url);
-            controllerBuilder.setOldController(drawee.getController());
-            controllerBuilder.setControllerListener(getDraweeControllerListener(drawee));
+            PipelineDraweeControllerBuilder builder = controllerBuilder;
+            if (builder == null) {
+                builder = Fresco.newDraweeControllerBuilder();
+            }
+
+            builder.setUri(url);
+            builder.setOldController(drawee.getController());
+            builder.setControllerListener(getDraweeControllerListener(drawee));
             if (imageRequestBuilder != null) {
                 imageRequestBuilder.setSource(Uri.parse(url));
-                controllerBuilder.setImageRequest(imageRequestBuilder.build());
+                builder.setImageRequest(imageRequestBuilder.build());
             }
-            drawee.setController(controllerBuilder.build());
+            drawee.setController(builder.build());
         }
 
     }
