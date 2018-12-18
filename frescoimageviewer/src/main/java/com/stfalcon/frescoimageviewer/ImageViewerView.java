@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
@@ -52,6 +53,7 @@ class ImageViewerView extends RelativeLayout
 
     private ImageRequestBuilder customImageRequestBuilder;
     private GenericDraweeHierarchyBuilder customDraweeHierarchyBuilder;
+    private PipelineDraweeControllerBuilder customDraweeControllerBuilder;
 
     private boolean wasScaled;
     private OnDismissListener onDismissListener;
@@ -77,7 +79,8 @@ class ImageViewerView extends RelativeLayout
 
     public void setUrls(ImageViewer.DataSet<?> dataSet, int startPosition) {
         adapter = new ImageViewerAdapter(
-                getContext(), dataSet, customImageRequestBuilder, customDraweeHierarchyBuilder, isZoomingAllowed);
+                getContext(), dataSet, customImageRequestBuilder, customDraweeHierarchyBuilder,
+                customDraweeControllerBuilder, isZoomingAllowed);
         pager.setAdapter(adapter);
         setStartPosition(startPosition);
     }
@@ -88,6 +91,10 @@ class ImageViewerView extends RelativeLayout
 
     public void setCustomDraweeHierarchyBuilder(GenericDraweeHierarchyBuilder customDraweeHierarchyBuilder) {
         this.customDraweeHierarchyBuilder = customDraweeHierarchyBuilder;
+    }
+
+    public void setCustomDraweeControllerBuilder(PipelineDraweeControllerBuilder customDraweeControllerBuilder) {
+        this.customDraweeControllerBuilder = customDraweeControllerBuilder;
     }
 
     @Override
