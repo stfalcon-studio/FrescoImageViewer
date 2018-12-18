@@ -1,3 +1,5 @@
+### This project is no longer supported. If you're able to switch from Fresco to any other library that works with the Android's ImageView, please migrate to the [StfalconImageViewer](https://github.com/stfalcon-studio/StfalconImageViewer) which is a better version of the FrescoImageViewer. Otherwise, you can still use the latest version of this library. Anyway, PRs are welcome!
+
 # FrescoImageViewer
 
 [![codebeat badge](https://codebeat.co/badges/60dbbc38-c85e-4680-b25b-6b04d859e904)](https://codebeat.co/projects/github-com-stfalcon-studio-frescoimageviewer-master) [ ![Download](https://api.bintray.com/packages/troy379/maven/FrescoImageViewer/images/download.svg) ](https://bintray.com/troy379/maven/FrescoImageViewer/_latestVersion)
