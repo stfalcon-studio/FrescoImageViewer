@@ -98,6 +98,39 @@ builder.setCustomImageRequestBuilder(
                     .setPostprocessor(new GrayscalePostprocessor()));
 ```
 
+#### Custom theme
+You can also apply your own theme to the viewer:
+```java
+builder.setCustomTheme(R.style.MyCustomTheme);
+```
+You could, for example, provide an exit/enter animation to the viewer by declaring `MyCustomTheme` like this:
+```xml
+<style name="MyCustomTheme" parent="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+    <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>
+</style>
+
+<style name="MyAnimation.Window" parent="@android:style/Animation.Activity">
+    <item name="android:windowEnterAnimation">@anim/fade_in</item>
+    <item name="android:windowExitAnimation">@anim/fade_out</item>
+</style>
+```
+**fade_in.xml:**
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<alpha xmlns:android="http://schemas.android.com/apk/res/android"
+       android:interpolator="@android:anim/decelerate_interpolator"
+       android:fromAlpha="0.0" android:toAlpha="1.0"
+       android:duration="300" />
+```
+**fade_out.xml:**
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<alpha xmlns:android="http://schemas.android.com/apk/res/android"
+       android:interpolator="@android:anim/decelerate_interpolator"
+       android:fromAlpha="1.0" android:toAlpha="0.0"
+       android:duration="300" />
+```
+
 #### Image margin
 Simply add margins between images with dimens with setImageMargin(context, dimen) or in `px` using `setImageMarginPx(marginPx)`.
 
