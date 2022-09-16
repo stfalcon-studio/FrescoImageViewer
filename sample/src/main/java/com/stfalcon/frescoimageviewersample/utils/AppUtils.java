@@ -6,7 +6,6 @@ import androidx.annotation.StringRes;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
-import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
