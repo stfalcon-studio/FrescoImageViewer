@@ -6,6 +6,7 @@ buildscript {
         maven {
             url "https://maven.google.com"
         }
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.3'
@@ -17,11 +18,15 @@ buildscript {
 }
 
 allprojects {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation"
+    }
     repositories {
         jcenter()
         maven {
             url "https://maven.google.com"
         }
+        google()
     }
 }
 

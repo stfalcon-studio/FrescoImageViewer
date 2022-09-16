@@ -2,9 +2,11 @@ package com.stfalcon.frescoimageviewersample.utils;
 
 import android.content.Context;
 import android.os.Handler;
-import android.support.annotation.StringRes;
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
+import androidx.annotation.StringRes;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
+import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +61,7 @@ public final class AppUtils {
     }
 
     private static Snackbar multilineSnackbar(Snackbar snackbar) {
-        TextView textView = (TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+        TextView textView = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
         textView.setMaxLines(5);
         return snackbar;
     }

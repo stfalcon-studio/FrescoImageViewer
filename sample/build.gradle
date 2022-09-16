@@ -7,8 +7,8 @@ android {
         applicationId "com.stfalcon.frescoimageviewersample"
         minSdkVersion 15
         targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
 
         renderscriptTargetApi 25
         renderscriptSupportModeEnabled true
@@ -33,10 +33,10 @@ ext {
 
 dependencies {
     implementation project(':frescoimageviewer')
-    implementation "com.android.support:design:$supportVersion"
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support:support-v4:$supportVersion"
-    implementation "com.android.support:cardview-v7:$supportVersion"
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
     implementation "com.facebook.fresco:fresco:$frescoVersion"
 
