@@ -105,6 +105,8 @@ public class ZoomableDraweeView extends SimpleDraweeView implements IAttacher {
         return attacher.getMaximumScale();
     }
 
+    public void setOrientation(int orientation) {  }
+
     @Override
     public void setMinimumScale(float minimumScale) {
         attacher.setMinimumScale(minimumScale);

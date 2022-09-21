@@ -25,7 +25,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'me.relex:photodraweeview:1.1.0'
-    implementation 'com.facebook.fresco:fresco:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'me.relex:photodraweeview:2.0.0'
+    implementation 'com.facebook.fresco:fresco:2.6.0'
+    implementation 'android.support.v4'
 }
