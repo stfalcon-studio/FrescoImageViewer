@@ -18,7 +18,7 @@ package com.stfalcon.frescoimageviewer.drawee;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -104,6 +104,8 @@ public class ZoomableDraweeView extends SimpleDraweeView implements IAttacher {
     public float getMaximumScale() {
         return attacher.getMaximumScale();
     }
+
+    public void setOrientation(int orientation) {  }
 
     @Override
     public void setMinimumScale(float minimumScale) {

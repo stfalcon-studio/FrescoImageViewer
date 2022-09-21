@@ -2,7 +2,7 @@ package com.stfalcon.frescoimageviewersample.features.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 
 import com.stfalcon.frescoimageviewersample.R;
 import com.stfalcon.frescoimageviewersample.features.demo.DemoActivity;

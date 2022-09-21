@@ -1,15 +1,13 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 31
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 25
-        versionCode 1
-        versionName "0.5.0"
+        minSdkVersion 15
+        targetSdkVersion 31
+        versionCode 2
+        versionName "0.6.0"
     }
     buildTypes {
         release {
@@ -25,19 +23,10 @@ android {
 
 }
 
-publish {
-    groupId = 'com.github.stfalcon'
-    artifactId = 'frescoimageviewer'
-    publishVersion = '0.5.0'
-    desc = 'Customizable full screen image viewer based on Fresco library, that includes "pinch to zoom" and "swipe to dismiss" gestures'
-    licences = ['Apache-2.0']
-    uploadName = 'FrescoImageViewer'
-    website = 'https://github.com/stfalcon-studio/FrescoImageViewer.git'
-}
-
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'me.relex:photodraweeview:1.1.0'
-    provided 'com.facebook.fresco:fresco:0.12.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'me.relex:photodraweeview:2.0.0'
+    implementation 'com.facebook.fresco:fresco:2.6.0'
+    implementation 'android.support.v4'
 }

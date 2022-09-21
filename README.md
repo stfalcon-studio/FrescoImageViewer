@@ -146,7 +146,7 @@ You can take a look at [sample project][sample] for more information.
 
 Download via **Gradle**:
 ```gradle
-compile 'com.github.stfalcon:frescoimageviewer:0.5.0'
+compile 'com.github.stfalcon:frescoimageviewer:0.6.0'
 ```
 
 or **Maven**:
@@ -154,7 +154,7 @@ or **Maven**:
 <dependency>
   <groupId>com.github.stfalcon</groupId>
   <artifactId>frescoimageviewer</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
   <type>pom</type>
 </dependency>
 ```

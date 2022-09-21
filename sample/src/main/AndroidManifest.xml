@@ -11,6 +11,7 @@
 
         <activity
             android:name=".features.main.MainActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar">
             <intent-filter>

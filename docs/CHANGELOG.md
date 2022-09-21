@@ -1,3 +1,7 @@
+## Version 0.6.0 (2022/09/19)
+* replaced android support libraries by AndroidX
+* updated android sdk target version to 31
+
 ## Version 0.5.0 (2017/03/14)
 
  * formatter for custom objects collections;
